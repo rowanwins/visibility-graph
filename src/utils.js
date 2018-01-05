@@ -5,8 +5,8 @@ export const pi2 = Math.PI / 2
 
 export const INF = 10000
 const COLIN_TOLERANCE = 13
-const T = 10 ** COLIN_TOLERANCE
-const T2 = 10.0 ** COLIN_TOLERANCE
+const T = Math.pow(10, COLIN_TOLERANCE)
+const T2 = Math.pow(10.0, COLIN_TOLERANCE)
 
 export function edgeIntersect (p1, q1, edge) {
   const p2 = edge.p1
@@ -38,9 +38,9 @@ export function onSegment (p, q, r) {
 }
 
 export function angle2 (p1, p2, p3) {
-  const a = (p3.x - p2.x) ** 2 + (p3.y - p2.y) ** 2
-  const b = (p3.x - p1.x) ** 2 + (p3.y - p1.y) ** 2
-  const c = (p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2
+  const a = Math.pow((p3.x - p2.x), 2) + Math.pow((p3.y - p2.y), 2)
+  const b = Math.pow((p3.x - p1.x), 2) + Math.pow((p3.y - p1.y), 2)
+  const c = Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2)
   return Math.acos((a + c - b) / (2 * Math.sqrt(a) * Math.sqrt(c)))
 }
 

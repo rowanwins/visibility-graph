@@ -4,6 +4,7 @@ import { EdgeKeys } from './EdgeKeys'
 import { EdgeKey } from './EdgeKey'
 import { Point } from './Point'
 import { INF, edgeIntersect, onSegment, ccw, edgeDistance } from './utils'
+import { _renderSortedPoints, _renderOpenEdges } from './debug'
 
 export class Graph {
 
@@ -39,18 +40,11 @@ export class Graph {
     const allVisible = []
     for (var i = 0; i < this.points.length; i++) {
       const p = this.points[i]
-      const points = this.copyPoints()
-      // if (p.x === 14.414062499999998) {
-      //   console.log(points.map(p => {
-      //     return [p.x, p.y]
-      //   }))
-      // }
-      this.sortPoints(points, p)
-      // if (p.x === 14.414062499999998) {
-      //   console.log(points.map(p => {
-      //     return [p.x, p.y]
-      //   }))
-      // }
+
+      this.sortPoints(p)
+
+      // _renderSortedPoints(p, this.points)
+
       const openEdges = new EdgeKeys()
       const pointInf = new Point(INF, p.y)
       for (let ii = 0; ii < this.edges.length; ii++) {
@@ -61,11 +55,13 @@ export class Graph {
           openEdges.addKey(new EdgeKey(p, pointInf, e))
         }
       }
+      _renderOpenEdges(p, openEdges.keys)
+
       const visible = []
       let prev = null
       let prevVisible = null
-      for (let ii = 0; ii < points.length; ii++) {
-        const p2 = points[ii]
+      for (let ii = 0; ii < this.points.length; ii++) {
+        const p2 = this.points[ii]
         if (p2 === p) continue
         if (openEdges.keys.length > 0) {
           for (let iii = 0; iii < this.edges.length; iii++) {
@@ -101,8 +97,8 @@ export class Graph {
           if (isVisible && this.edgeInPolygon(prev, p2)) isVisible = false
         }
 
-        var prevPoint = ii === 0 ? points[points.length - 1] : points[ii - 1]
-        var nextPoint = ii < points.length - 1 ? points[ii + 1] : points[0]
+        var prevPoint = ii === 0 ? this.points[this.points.length - 1] : this.points[ii - 1]
+        var nextPoint = ii < this.points.length - 1 ? this.points[ii + 1] : this.points[0]
 
         // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(prevPoint, nextPoint)
         if (isVisible && (!p2.isPointEqual(prevPoint) || !p2.isPointEqual(nextPoint))) isVisible = !this.edgeInPolygon(p, p2)
@@ -132,9 +128,8 @@ export class Graph {
     return this.points.slice(0)
   }
 
-  sortPoints (points, point) {
-
-    points.sort((a, b) => {
+  sortPoints (point) {
+    this.points.sort((a, b) => {
       const angle1 = point.angleToPoint(a)
       const angle2 = point.angleToPoint(b)
       if (angle1 < angle2) return -1

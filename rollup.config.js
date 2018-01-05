@@ -6,8 +6,8 @@ import uglify from 'rollup-plugin-uglify'
 
 export default {
   entry: 'src/main.js',
-  format: 'cjs',
-  moduleName: 'hydology',
+  format: 'umd',
+  moduleName: 'vg',
   plugins: [
     resolve({ jsnext: true, main: true }),
     commonjs(),
@@ -15,5 +15,5 @@ export default {
     // uglify()
   ],
   sourceMap: true,
-  dest: 'dist/hydrology.js'
+  dest: 'dist/vg.js'
 }

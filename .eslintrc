@@ -3,5 +3,8 @@
   "rules": {
     "padded-blocks": "off",
     "no-console": "off"
+  },
+  "globals": {
+    "L": true
   }
 }
