@@ -10,29 +10,41 @@ export class Graph {
 
   constructor (polygons) {
     this.points = []
-    this.edges = []
     this.vg = []
+    this.edges = []
 
     let prevGeomIndex = 0
     let subtractCoordIndex = 0
 
     var g = this
+    let prevPoint = null
+
     coordEach(polygons, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
 
       if (geometryIndex > prevGeomIndex) {
         prevGeomIndex = geometryIndex
         subtractCoordIndex = coordIndex
       }
-      var nextCoordIndex = (coordIndex - subtractCoordIndex) + 1
-      if (nextCoordIndex === polygons.features[featureIndex].geometry.coordinates[geometryIndex].length) nextCoordIndex = 0
 
-      const nextPoint = polygons.features[featureIndex].geometry.coordinates[geometryIndex][nextCoordIndex]
-      const p1 = new Point(currentCoord[0], currentCoord[1], geometryIndex)
-      const p2 = new Point(nextPoint[0], nextPoint[1], geometryIndex)
+      const currentPoint = new Point(currentCoord[0], currentCoord[1], geometryIndex)
+      g.points.push(currentPoint)
 
-      g.edges.push(new Edge(p1, p2))
-      g.points.push(p1)
+      if (coordIndex - subtractCoordIndex === 0) {
+        const prevPointCoords = polygons.features[featureIndex].geometry.coordinates[geometryIndex][polygons.features[featureIndex].geometry.coordinates[geometryIndex].length - 2]
+        prevPoint = new Point(prevPointCoords[0], prevPointCoords[1], geometryIndex)
+      }
+
+      const currentEdge = new Edge(prevPoint, currentPoint)
+
+      currentPoint.edges.push(currentEdge)
+      prevPoint.edges.push(currentEdge)
+
+      g.edges.push(currentEdge)
+
+      prevPoint = currentPoint
     }, true)
+
+    this.points[this.points.length - 1].edges.push(this.points[0].edges[0])
 
   }
 
@@ -40,13 +52,14 @@ export class Graph {
     const allVisible = []
     for (var i = 0; i < this.points.length; i++) {
       const p = this.points[i]
+      var clonedPoints = this.clonePoints()
+      this.sortPoints(p, clonedPoints)
 
-      this.sortPoints(p)
-
-      // _renderSortedPoints(p, this.points)
+      // _renderSortedPoints(p, clonedPoints)
 
       const openEdges = new EdgeKeys()
       const pointInf = new Point(INF, p.y)
+      if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(this.edges.length)
       for (let ii = 0; ii < this.edges.length; ii++) {
         const e = this.edges[ii]
         if (e.containsPoint(p)) continue
@@ -55,27 +68,42 @@ export class Graph {
           openEdges.addKey(new EdgeKey(p, pointInf, e))
         }
       }
-      _renderOpenEdges(p, openEdges.keys)
+
+      // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(openEdges)
+      // _renderOpenEdges(p, openEdges.keys)
 
       const visible = []
       let prev = null
       let prevVisible = null
-      for (let ii = 0; ii < this.points.length; ii++) {
-        const p2 = this.points[ii]
+      for (let ii = 0; ii < clonedPoints.length; ii++) {
+        const p2 = clonedPoints[ii]
         if (p2 === p) continue
         if (openEdges.keys.length > 0) {
-          for (let iii = 0; iii < this.edges.length; iii++) {
-            const e = this.edges[iii]
+          for (let iii = 0; iii < p2.edges.length; iii++) {
+            const e = p2.edges[iii]
+            // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(e)
+            // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log('CHECK', e)
             if (ccw(p, p2, e.getOtherPointInEdge(p2)) === -1) {
               const k = new EdgeKey(p, p2, e)
+              // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log('KeysLength', k)
+
               const index = openEdges.findKeyPosition(k) - 1
+              if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log('KeysLength', k)
+              if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log('KeysLength', e)
+              // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log('IND', index)
+              // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(openEdges)
+              // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(k)
+
               if (index < 0) continue
               if (openEdges.keys.length > 0 && openEdges.keys[index].matchesOtherKey(k)) {
+                // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(openEdges.keys.length)
                 openEdges.keys.splice(index, 1)
               }
             }
           }
         }
+       // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(openEdges.keys.length)
+
         let isVisible = false
         if (prev === null || ccw(p, prev, p2) !== 0 || !onSegment(p, prev, p2)) {
           if (openEdges.keys.length === 0) {
@@ -97,8 +125,8 @@ export class Graph {
           if (isVisible && this.edgeInPolygon(prev, p2)) isVisible = false
         }
 
-        var prevPoint = ii === 0 ? this.points[this.points.length - 1] : this.points[ii - 1]
-        var nextPoint = ii < this.points.length - 1 ? this.points[ii + 1] : this.points[0]
+        var prevPoint = ii === 0 ? clonedPoints[this.points.length - 1] : clonedPoints[ii - 1]
+        var nextPoint = ii < clonedPoints.length - 1 ? clonedPoints[ii + 1] : clonedPoints[0]
 
         // if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(prevPoint, nextPoint)
         if (isVisible && (!p2.isPointEqual(prevPoint) || !p2.isPointEqual(nextPoint))) isVisible = !this.edgeInPolygon(p, p2)
@@ -124,12 +152,12 @@ export class Graph {
     return allVisible
   }
 
-  copyPoints () {
+  clonePoints () {
     return this.points.slice(0)
   }
 
-  sortPoints (point) {
-    this.points.sort((a, b) => {
+  sortPoints (point, clonedPoints) {
+    clonedPoints.sort((a, b) => {
       const angle1 = point.angleToPoint(a)
       const angle2 = point.angleToPoint(b)
       if (angle1 < angle2) return -1
@@ -140,6 +168,12 @@ export class Graph {
       if (dist1 > dist2) return 1
       return 0
     })
+  }
+
+  findPoint (p) {
+    for (var i = 0; i < this.points.length; i++) {
+      if (this.points[i].isPointEqual(p)) return this.points[i]
+    }
   }
 
   edgeInPolygon (p1, p2) {

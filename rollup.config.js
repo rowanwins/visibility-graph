@@ -11,9 +11,9 @@ export default {
   plugins: [
     resolve({ jsnext: true, main: true }),
     commonjs(),
-    babel(babelrc())
-    // uglify()
+    babel(babelrc()),
+    uglify()
   ],
   sourceMap: true,
-  dest: 'dist/vg.js'
+  dest: 'dist/vis-graph.js'
 }

@@ -16,7 +16,8 @@ export default {
       minZoom: 1,
       maxZoom: 20,
       center: [0, 0],
-      zoom: 2
+      zoom: 2,
+      crs: L.CRS.Simple
     })
     var polyLayer = L.geoJson(polygon).addTo(map)
     map.fitBounds(polyLayer.getBounds(), {
@@ -25,7 +26,21 @@ export default {
 
     setTimeout(function () {
       var vg = new Graph(polygon)
-      vg.processGraph()
+      console.log(vg)
+      // L.marker([vg.points[0].y, vg.points[0].x]).addTo(map)
+      // L.marker([vg.points[0].edges[0].p2.y, vg.points[0].edges[0].p2.x]).addTo(map)
+
+      // L.marker([vg.points[0].edges[1].p1.y, vg.points[0].edges[1].p1.x]).addTo(map)
+      var out = vg.processGraph()
+      // console.log(out)
+
+      // Show output of first Marker
+      // L.circleMarker([out[0].point.y, out[0].point.x]).addTo(map)
+      // out[0].otherVis.forEach(op => {
+      //   L.circleMarker([op.y, op.x], {
+      //     color: 'red'
+      //   }).addTo(map)
+      // })
     }, 1000)
   }
 }

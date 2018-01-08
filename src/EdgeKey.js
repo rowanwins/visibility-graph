@@ -9,7 +9,8 @@ export class EdgeKey {
   }
 
   isLessThanOtherEdgeKey (otherEdgeKey) {
-    if (this.edge === otherEdgeKey.edge) return false
+    if (this.matchesOtherKey(otherEdgeKey)) return false
+
     if (!edgeIntersect(this.p1, this.p2, otherEdgeKey.edge)) return true
     const selfDistance = pointEdgeDistance(this.p1, this.p2, this.edge)
     const otherDistance = pointEdgeDistance(this.p1, this.p2, otherEdgeKey.edge)
@@ -27,7 +28,7 @@ export class EdgeKey {
   }
 
   matchesOtherKey (otherKey) {
-    return this.edge.areEdgesEquals(otherKey.edge)
+    return this.edge.areEdgesEqual(otherKey.edge)
   }
 
 }

@@ -7,6 +7,7 @@ export class Point {
     this.x = x
     this.y = y
     this.polygonID = polygonID
+    this.edges = []
   }
 
   isPointEqual (otherPoint) {
