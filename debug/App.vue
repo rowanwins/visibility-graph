@@ -32,15 +32,15 @@ export default {
 
       // L.marker([vg.points[0].edges[1].p1.y, vg.points[0].edges[1].p1.x]).addTo(map)
       var out = vg.processGraph()
-      // console.log(out)
+      console.log(out)
 
       // Show output of first Marker
-      // L.circleMarker([out[0].point.y, out[0].point.x]).addTo(map)
-      // out[0].otherVis.forEach(op => {
-      //   L.circleMarker([op.y, op.x], {
-      //     color: 'red'
-      //   }).addTo(map)
-      // })
+      L.circleMarker([out[0].point.y, out[0].point.x]).addTo(map)
+      out[0].otherVis.forEach(op => {
+        L.circleMarker([op.y, op.x], {
+          color: 'red'
+        }).addTo(map)
+      })
     }, 1000)
   }
 }

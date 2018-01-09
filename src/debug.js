@@ -6,6 +6,8 @@ var map = null
 export function _renderSortedPoints (point, sortedPoints) {
   if (map === null) map = window.map
 
+  L.NumberedDivIcon = createNumberDiv()
+
   setCurrentPoint(point)
 
   if (sortedPointsLg === null) sortedPointsLg = L.layerGroup([]).addTo(map)
@@ -44,20 +46,22 @@ function setCurrentPoint (point) {
   }).addTo(map)
 }
 
-L.NumberedDivIcon = L.Icon.extend({
-  options: {
-    number: '',
-    iconSize: new L.Point(25, 25),
-    className: 'leaflet-div-icon'
-  },
+function createNumberDiv () {
+  return L.Icon.extend({
+    options: {
+      number: '',
+      iconSize: new L.Point(25, 25),
+      className: 'leaflet-div-icon'
+    },
+    createIcon: function () {
+      var div = document.createElement('div')
+      var numdiv = document.createElement('div')
+      numdiv.setAttribute('class', 'number')
+      numdiv.innerHTML = this.options['number'] || ''
+      div.appendChild(numdiv)
+      this._setIconStyles(div, 'icon')
+      return div
+    }
+  })
+}
 
-  createIcon: function () {
-    var div = document.createElement('div')
-    var numdiv = document.createElement('div')
-    numdiv.setAttribute('class', 'number')
-    numdiv.innerHTML = this.options['number'] || ''
-    div.appendChild(numdiv)
-    this._setIconStyles(div, 'icon')
-    return div
-  }
-})

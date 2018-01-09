@@ -11,7 +11,7 @@ export class Point {
   }
 
   isPointEqual (otherPoint) {
-    return this.x && otherPoint.x && this.y === otherPoint.y
+    return this.x === otherPoint.x && this.y === otherPoint.y
   }
 
   angleToPoint (otherPoint) {
