@@ -4,7 +4,7 @@ import { EdgeKeys } from './EdgeKeys'
 import { EdgeKey } from './EdgeKey'
 import { Point } from './Point'
 import { INF, edgeIntersect, onSegment, ccw, edgeDistance } from './utils'
-import { _renderSortedPoints, _renderOpenEdges } from './debug'
+import { _renderSortedPoints, _renderOpenEdges } from './debug' //eslint-disable-line
 
 export class Graph {
 

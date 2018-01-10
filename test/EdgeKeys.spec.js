@@ -19,25 +19,11 @@ test('EdgeKey test', t => {
 
   var eks = new EdgeKeys()
   t.is(eks.keys.length, 0)
-  // eks.addKey(ek1)
-  // eks.addKey(ek1)
-  // eks.addKey(ek1)
-  // eks.addKey(ek2)
-  // console.log(eks.keys.length)
-  // t.is(eks.keys.length, 4)
-  // t.is(eks.findKeyPosition(ek1), 3)
-  // t.is(eks.findKeyPosition(ek2), 4)
 
-  // t.is(e1.areEdgesEqual(e1a), true)
-  // t.is(e2a.areEdgesEqual(e1), true)
-  // t.is(e1.areEdgesEqual(e1), true)
-  // t.is(e1.areEdgesEqual(e2), false)
-
-  // t.is(e1.containsPoint(p1), true)
-  // t.is(e1.containsPoint(p2), true)
-  // t.is(e1.containsPoint(p3), false)
-
-  // t.is(e1.getOtherPointInEdge(p1), p2)
-  // t.is(e1.getOtherPointInEdge(p2), p1)
+  eks.addKey(ek1)
+  eks.addKey(ek1)
+  eks.addKey(ek1)
+  eks.addKey(ek2)
+  t.is(eks.keys.length, 4)
 
 })
