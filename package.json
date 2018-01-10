@@ -55,7 +55,6 @@
     "rollup-watch": "^4.0.0"
   },
   "dependencies": {
-    "@turf/boolean-point-in-polygon": "^5.1.5",
     "@turf/meta": "^5.2.0"
   }
 }

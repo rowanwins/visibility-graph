@@ -63,7 +63,7 @@ export class Graph {
         const e = this.edges[ii]
         if (e.containsPoint(p)) continue
         if (edgeIntersect(p, pointInf, e)) {
-          if (onSegment(p, e.p1, pointInf) && onSegment(p, e.p2, pointInf)) continue
+          if (onSegment(p, e.p1, pointInf) || onSegment(p, e.p2, pointInf)) continue
           openEdges.addKey(new EdgeKey(p, pointInf, e))
         }
       }

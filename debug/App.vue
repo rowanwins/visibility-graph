@@ -53,15 +53,6 @@ export default {
     var out = vg.processGraph()
     console.log(out)
     console.timeEnd('visgraph')
-    // L.circleMarker([out[4].point.y, out[4].point.x]).addTo(map)
-    // out.forEach((p, i) => {
-    //   p.otherVis.forEach(op => {
-    //     L.polyline([[op.y, op.x], [p.point.y, p.point.x]], {
-    //       color: 'red',
-    //       weight: 1
-    //     }).addTo(map)
-    //   })
-    // })
 
   }
 }
