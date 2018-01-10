@@ -5,6 +5,7 @@
     "no-console": "off"
   },
   "globals": {
-    "L": true
+    "L": true,
+    "turf": true
   }
 }

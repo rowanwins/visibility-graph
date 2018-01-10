@@ -19,27 +19,50 @@ export default {
       zoom: 2,
       crs: L.CRS.Simple
     })
+    var selectionLayer = L.layerGroup([]).addTo(map)
+
+    function highlightFeature (e) {
+      selectionLayer.clearLayers()
+      out.forEach(p => {
+        if (p.point.x === e.target.options.origPoint[0] && p.point.y === e.target.options.origPoint[1]) {
+          p.otherVis.forEach(op => {
+            L.polyline([[op.y, op.x], [p.point.y, p.point.x]], {
+              color: 'red',
+              weight: 1
+            }).addTo(selectionLayer)
+          })
+        }
+      })
+    }
+
     var polyLayer = L.geoJson(polygon).addTo(map)
     map.fitBounds(polyLayer.getBounds(), {
       padding: [20, 20]
     })
 
-    setTimeout(function () {
-      console.time('visgraph')
-      var vg = new Graph(polygon)
-      var out = vg.processGraph()
-      console.timeEnd('visgraph')
-      // L.circleMarker([out[4].point.y, out[4].point.x]).addTo(map)
-      out.forEach((p, i) => {
-        p.otherVis.forEach(op => {
-          L.polyline([[op.y, op.x], [p.point.y, p.point.x]], {
-            color: 'red',
-            weight: 1
-          }).addTo(map)
-        })
-      })
+    turf.meta.coordEach(polygon, function (currentCoord) {
+      var layer = L.circleMarker([currentCoord[1], currentCoord[0]], {
+        opacity: 0,
+        origPoint: [currentCoord[0], currentCoord[1]]
+      }).addTo(map)
+      layer.on('mouseover', highlightFeature)
+    }, true)
 
-    }, 1000)
+    console.time('visgraph')
+    var vg = new Graph(polygon)
+    var out = vg.processGraph()
+    console.log(out)
+    console.timeEnd('visgraph')
+    // L.circleMarker([out[4].point.y, out[4].point.x]).addTo(map)
+    // out.forEach((p, i) => {
+    //   p.otherVis.forEach(op => {
+    //     L.polyline([[op.y, op.x], [p.point.y, p.point.x]], {
+    //       color: 'red',
+    //       weight: 1
+    //     }).addTo(map)
+    //   })
+    // })
+
   }
 }
 </script>
