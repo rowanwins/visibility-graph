@@ -59,7 +59,6 @@ export class Graph {
 
       const openEdges = new EdgeKeys()
       const pointInf = new Point(INF, p.y)
-      if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(this.edges.length)
       for (let ii = 0; ii < this.edges.length; ii++) {
         const e = this.edges[ii]
         if (e.containsPoint(p)) continue
@@ -68,7 +67,6 @@ export class Graph {
           openEdges.addKey(new EdgeKey(p, pointInf, e))
         }
       }
-
       // _renderOpenEdges(p, openEdges.keys)
 
       const visible = []
@@ -83,7 +81,6 @@ export class Graph {
             if (ccw(p, p2, e.getOtherPointInEdge(p2)) === -1) {
               const k = new EdgeKey(p, p2, e)
               const index = openEdges.findKeyPosition(k) - 1
-              if (p.x === 14.414062499999998 && p.y === 12.897489183755892) console.log(index)
               if (openEdges.keys.length > 0 && openEdges.keys[index].matchesOtherKey(k)) {
                 openEdges.keys.splice(index, 1)
               }
@@ -111,16 +108,11 @@ export class Graph {
           }
           if (isVisible && this.edgeInPolygon(prev, p2)) isVisible = false
         }
-        let isInAdjacentPoints = false
-        for (let iii = 0; iii < p2.edges.length; iii++) {
-          const e = p2.edges[iii]
-          const op = e.getOtherPointInEdge(p)
-          if (op.isPointEqual(p)) {
-            isInAdjacentPoints = true
-            break
-          }
-        }
 
+        var prevPoint = i !== 0 ? this.points[i - 1] : this.points[this.points.length - 1]
+        var nextPoint = i !== this.points.length - 1 ? this.points[i + 1] : this.points[0]
+
+        const isInAdjacentPoints = p2.isPointEqual(prevPoint) || p2.isPointEqual(nextPoint)
         if (isVisible && !isInAdjacentPoints) isVisible = !this.edgeInPolygon(p, p2)
 
         if (isVisible) visible.push(p2)
@@ -152,6 +144,7 @@ export class Graph {
     clonedPoints.sort((a, b) => {
       const angle1 = point.angleToPoint(a)
       const angle2 = point.angleToPoint(b)
+      if (angle1 === 0 && angle2 < 1) return 1
       if (angle1 < angle2) return -1
       if (angle1 > angle2) return 1
       const dist1 = edgeDistance(a, point)
@@ -180,13 +173,15 @@ export class Graph {
     let intersectCount = 0
     let coFlag = false
     let coDir = 0
+
     for (let i = 0; i < polyEdges.length; i++) {
       const e = polyEdges[i]
       if (p1.y < e.p1.y && p1.y < e.p2.y) continue
-      if (p1.y > e.p1.y && p1.y < e.p2.y) continue
-      const co0 = ccw(p1, e.p1, p2) === 0 && e.p1.x > p1.x
-      const co1 = ccw(p1, e.p2, p2) === 0 && e.p2.x > p1.x
+      if (p1.y > e.p1.y && p1.y > e.p2.y) continue
+      const co0 = (ccw(p1, e.p1, p2) === 0) && (e.p1.x > p1.x)
+      const co1 = (ccw(p1, e.p2, p2) === 0) && (e.p2.x > p1.x)
       const coPoint = co0 ? e.p1 : e.p2
+     // const coPoint = co0 ? e.p1 : e.p2
       if (co0 || co1) {
         coDir = e.getOtherPointInEdge(coPoint).y > p1.y ? coDir++ : coDir--
         if (coFlag) {
@@ -200,7 +195,7 @@ export class Graph {
         intersectCount++
       }
     }
-    if (intersectCount / 2 === 0) return false
+    if (intersectCount % 2 === 0) return false
     return true
   }
 

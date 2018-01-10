@@ -15,11 +15,11 @@ export function _renderSortedPoints (point, sortedPoints) {
   sortedPoints.forEach((p, index) => {
     return L.marker([p.y, p.x], {
       color: 'black',
-      icon: new L.NumberedDivIcon({ number: index })
+      icon: new L.NumberedDivIcon({ number: index.toString() })
     }).addTo(sortedPointsLg)
   })
 
-  debugger
+  // debugger
 }
 
 export function _renderOpenEdges (point, edges) {

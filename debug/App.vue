@@ -25,22 +25,20 @@ export default {
     })
 
     setTimeout(function () {
+      console.time('visgraph')
       var vg = new Graph(polygon)
-      console.log(vg)
-      // L.marker([vg.points[0].y, vg.points[0].x]).addTo(map)
-      // L.marker([vg.points[0].edges[0].p2.y, vg.points[0].edges[0].p2.x]).addTo(map)
-
-      // L.marker([vg.points[0].edges[1].p1.y, vg.points[0].edges[1].p1.x]).addTo(map)
       var out = vg.processGraph()
-      console.log(out)
-
-      // Show output of first Marker
-      L.circleMarker([out[0].point.y, out[0].point.x]).addTo(map)
-      out[0].otherVis.forEach(op => {
-        L.circleMarker([op.y, op.x], {
-          color: 'red'
-        }).addTo(map)
+      console.timeEnd('visgraph')
+      // L.circleMarker([out[4].point.y, out[4].point.x]).addTo(map)
+      out.forEach((p, i) => {
+        p.otherVis.forEach(op => {
+          L.polyline([[op.y, op.x], [p.point.y, p.point.x]], {
+            color: 'red',
+            weight: 1
+          }).addTo(map)
+        })
       })
+
     }, 1000)
   }
 }
@@ -56,15 +54,15 @@ export default {
   .leaflet-div-icon {
     background: white;
     border: 2px solid;
-    border-radius: 50%;
+    border-radius:  60%;
   }
 
   .leaflet-marker-icon .number{
     position: relative;
     top: 4px;
     font-size: 12px;
-    width: 25px;
-    height: 25px;
+    width: 2 6px;
+    height: 2 6px;
     text-align: center;
   }
 </style>
