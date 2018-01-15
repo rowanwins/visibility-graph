@@ -12,49 +12,63 @@ export class Graph {
     this.points = []
     this.vg = []
     this.edges = []
+    this.polygons = [[]]
 
     let prevGeomIndex = 0
     let subtractCoordIndex = 0
-
+    let prevFeatureIndex = 0
+    let startNewFeatureIndex = 0
     var g = this
     let prevPoint = null
 
     coordEach(polygons, function (currentCoord, coordIndex, featureIndex, multiFeatureIndex, geometryIndex) {
-
+      let newFeature = false
       if (geometryIndex > prevGeomIndex) {
         prevGeomIndex = geometryIndex
         subtractCoordIndex = coordIndex
       }
+      if (featureIndex > prevFeatureIndex) {
+        g.points[g.points.length - 1].edges.push(g.points[startNewFeatureIndex].edges[0])
+        prevPoint.endVertice = true
+        prevPoint.endVerticeStart = startNewFeatureIndex
+        prevFeatureIndex = featureIndex
+        newFeature = true
+        startNewFeatureIndex = coordIndex
+        g.polygons.push([])
+      }
 
-      const currentPoint = new Point(currentCoord[0], currentCoord[1], geometryIndex)
+      const currentPoint = new Point(currentCoord[0], currentCoord[1], featureIndex)
       g.points.push(currentPoint)
 
-      if (coordIndex - subtractCoordIndex === 0) {
+      if (coordIndex - subtractCoordIndex === 0 || newFeature) {
+        currentPoint.startingVertice = true
+        currentPoint.endVerticeStart = polygons.features[featureIndex].geometry.coordinates[geometryIndex].length - 2
         const prevPointCoords = polygons.features[featureIndex].geometry.coordinates[geometryIndex][polygons.features[featureIndex].geometry.coordinates[geometryIndex].length - 2]
-        prevPoint = new Point(prevPointCoords[0], prevPointCoords[1], geometryIndex)
+        prevPoint = new Point(prevPointCoords[0], prevPointCoords[1], featureIndex)
       }
 
       const currentEdge = new Edge(prevPoint, currentPoint)
-
       currentPoint.edges.push(currentEdge)
       prevPoint.edges.push(currentEdge)
-
+      g.polygons[featureIndex].push(currentEdge)
       g.edges.push(currentEdge)
-
       prevPoint = currentPoint
+
     }, true)
-
-    this.points[this.points.length - 1].edges.push(this.points[0].edges[0])
-
+    this.points[this.points.length - 1].edges.push(this.points[startNewFeatureIndex].edges[0])
+    prevPoint.endVertice = true
+    prevPoint.endVerticeStart = startNewFeatureIndex
   }
 
   processGraph () {
     const allVisible = []
     for (var i = 0; i < this.points.length; i++) {
       const p = this.points[i]
+      const prevPoint = !p.startingVertice ? this.points[i - 1] : this.points[i + p.endVerticeStart]
+      const nextPoint = !p.endVertice ? this.points[i + 1] : this.points[p.endVerticeStart]
+
       var clonedPoints = this.clonePoints()
       this.sortPoints(p, clonedPoints)
-
       // _renderSortedPoints(p, clonedPoints)
 
       const openEdges = new EdgeKeys()
@@ -81,7 +95,7 @@ export class Graph {
             if (ccw(p, p2, e.getOtherPointInEdge(p2)) === -1) {
               const k = new EdgeKey(p, p2, e)
               const index = openEdges.findKeyPosition(k) - 1
-              if (openEdges.keys.length > 0 && openEdges.keys[index].matchesOtherKey(k)) {
+              if (index !== -1 && openEdges.keys[index].matchesOtherKey(k)) {
                 openEdges.keys.splice(index, 1)
               }
             }
@@ -108,9 +122,6 @@ export class Graph {
           }
           if (isVisible && this.edgeInPolygon(prev, p2)) isVisible = false
         }
-
-        var prevPoint = i !== 0 ? this.points[i - 1] : this.points[this.points.length - 1]
-        var nextPoint = i !== this.points.length - 1 ? this.points[i + 1] : this.points[0]
 
         const isInAdjacentPoints = p2.isPointEqual(prevPoint) || p2.isPointEqual(nextPoint)
         if (isVisible && !isInAdjacentPoints) isVisible = !this.edgeInPolygon(p, p2)
@@ -144,7 +155,6 @@ export class Graph {
     clonedPoints.sort((a, b) => {
       const angle1 = point.angleToPoint(a)
       const angle2 = point.angleToPoint(b)
-      if (angle1 === 0 && angle2 < 1) return 1
       if (angle1 < angle2) return -1
       if (angle1 > angle2) return 1
       const dist1 = edgeDistance(a, point)
@@ -165,7 +175,7 @@ export class Graph {
     if (p1.polygonID !== p2.polygonID) return false
     if (p1.polygonID === -1 || p2.polygonID === -1) return false
     const midPoint = new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2)
-    return this.polygonCrossing(midPoint, this.edges)
+    return this.polygonCrossing(midPoint, this.polygons[p1.polygonID])
   }
 
   polygonCrossing (p1, polyEdges) {
@@ -181,7 +191,6 @@ export class Graph {
       const co0 = (ccw(p1, e.p1, p2) === 0) && (e.p1.x > p1.x)
       const co1 = (ccw(p1, e.p2, p2) === 0) && (e.p2.x > p1.x)
       const coPoint = co0 ? e.p1 : e.p2
-     // const coPoint = co0 ? e.p1 : e.p2
       if (co0 || co1) {
         coDir = e.getOtherPointInEdge(coPoint).y > p1.y ? coDir++ : coDir--
         if (coFlag) {

@@ -27,6 +27,7 @@ export function _renderOpenEdges (point, edges) {
   setCurrentPoint(point)
 
   if (openEdges === null) openEdges = L.layerGroup([]).addTo(map)
+  else openEdges.clearLayers()
 
   edges.forEach((e, index) => {
     L.polyline([[e.edge.p1.y, e.edge.p1.x], [e.edge.p2.y, e.edge.p2.x]], {
@@ -34,8 +35,7 @@ export function _renderOpenEdges (point, edges) {
     }).addTo(openEdges)
   })
 
-  debugger
-  openEdges.clearLayers()
+  // debugger
 }
 
 function setCurrentPoint (point) {

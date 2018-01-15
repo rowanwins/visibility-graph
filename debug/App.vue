@@ -8,6 +8,8 @@
 <script>
 
 import { polygon } from '../test/harness/polygon'
+import { polygonCollection } from '../test/harness/polygonCollection'
+import { linestring } from '../test/harness/linestring'
 import { Graph } from '../src/main'
 export default {
   name: 'app',
@@ -35,24 +37,28 @@ export default {
       })
     }
 
-    var polyLayer = L.geoJson(polygon).addTo(map)
+    var polyLayer = L.geoJson(polygonCollection).addTo(map)
     map.fitBounds(polyLayer.getBounds(), {
       padding: [20, 20]
     })
 
-    turf.meta.coordEach(polygon, function (currentCoord) {
+    turf.meta.coordEach(polygonCollection, function (currentCoord) {
       var layer = L.circleMarker([currentCoord[1], currentCoord[0]], {
         opacity: 0,
         origPoint: [currentCoord[0], currentCoord[1]]
       }).addTo(map)
       layer.on('mouseover', highlightFeature)
     }, true)
+    var out = null
+    setTimeout(function () {
+      console.time('visgraph')
+      var vg = new Graph(polygonCollection)
+      console.log(vg)
+      out = vg.processGraph()
+      // console.log(out)
+      console.timeEnd('visgraph')      
+    }, 400)
 
-    console.time('visgraph')
-    var vg = new Graph(polygon)
-    var out = vg.processGraph()
-    console.log(out)
-    console.timeEnd('visgraph')
 
   }
 }

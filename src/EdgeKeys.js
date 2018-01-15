@@ -16,13 +16,7 @@ export class EdgeKeys {
   }
 
   addKey (edgekey, p) {
-    let lo = 0
-    let hi = this.keys.length
-    while (lo < hi) {
-      const mid = Math.floor((lo + hi) / 2)
-      if (edgekey.isLessThanOtherEdgeKey(this.keys[mid])) hi = mid
-      else lo = mid + 1
-    }
+    const lo = this.findKeyPosition(edgekey)
     this.keys.splice(lo, 0, edgekey)
   }
 }
