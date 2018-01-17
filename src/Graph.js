@@ -127,7 +127,7 @@ export class Graph {
         const isInAdjacentPoints = p2.isPointEqual(prevPoint) || p2.isPointEqual(nextPoint)
         if (isVisible && !isInAdjacentPoints) isVisible = !this.edgeInPolygon(p, p2)
 
-        if (isVisible) visible.push({ x: p2.x, y: p2.y })
+        if (isVisible) visible.push(p2)
 
         for (let iii = 0; iii < p2.edges.length; iii++) {
           const e = p2.edges[iii]
@@ -141,7 +141,7 @@ export class Graph {
         prevVisible = isVisible
       }
       allVisible.push({
-        node: { x: p.x, y: p.y },
+        node: p,
         visibleNodes: visible
       })
     }
