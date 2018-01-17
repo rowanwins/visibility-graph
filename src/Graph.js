@@ -62,12 +62,13 @@ export class Graph {
 
   processGraph () {
     const allVisible = []
+    var clonedPoints = this.clonePoints()
+
     for (var i = 0; i < this.points.length; i++) {
       const p = this.points[i]
       const prevPoint = !p.startingVertice ? this.points[i - 1] : this.points[i + p.endVerticeStart]
       const nextPoint = !p.endVertice ? this.points[i + 1] : this.points[p.endVerticeStart]
 
-      var clonedPoints = this.clonePoints()
       this.sortPoints(p, clonedPoints)
       // _renderSortedPoints(p, clonedPoints)
 
@@ -126,7 +127,7 @@ export class Graph {
         const isInAdjacentPoints = p2.isPointEqual(prevPoint) || p2.isPointEqual(nextPoint)
         if (isVisible && !isInAdjacentPoints) isVisible = !this.edgeInPolygon(p, p2)
 
-        if (isVisible) visible.push(p2)
+        if (isVisible) visible.push({ x: p2.x, y: p2.y })
 
         for (let iii = 0; iii < p2.edges.length; iii++) {
           const e = p2.edges[iii]
@@ -140,8 +141,8 @@ export class Graph {
         prevVisible = isVisible
       }
       allVisible.push({
-        point: p,
-        otherVis: visible
+        node: { x: p.x, y: p.y },
+        visibleNodes: visible
       })
     }
     return allVisible

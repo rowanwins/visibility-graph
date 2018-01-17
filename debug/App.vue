@@ -26,9 +26,9 @@ export default {
     function highlightFeature (e) {
       selectionLayer.clearLayers()
       out.forEach(p => {
-        if (p.point.x === e.target.options.origPoint[0] && p.point.y === e.target.options.origPoint[1]) {
-          p.otherVis.forEach(op => {
-            L.polyline([[op.y, op.x], [p.point.y, p.point.x]], {
+        if (p.node.x === e.target.options.origPoint[0] && p.node.y === e.target.options.origPoint[1]) {
+          p.visibleNodes.forEach(op => {
+            L.polyline([[op.y, op.x], [p.node.y, p.node.x]], {
               color: 'red',
               weight: 1
             }).addTo(selectionLayer)
