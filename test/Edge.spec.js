@@ -4,11 +4,11 @@ import { Point } from '../src/Point'
 
 test('Edge test', t => {
 
-  var p1 = new Point(0, 0, -1)
-  var p2 = new Point(0, 1, -1)
-  var p3 = new Point(0, 2, -1)
-  var p4 = new Point(0, 0, -1)
-  var p5 = new Point(0, 1, -1)
+  var p1 = new Point([0, 0], -1)
+  var p2 = new Point([0, 1], -1)
+  var p3 = new Point([0, 2], -1)
+  var p4 = new Point([0, 0], -1)
+  var p5 = new Point([0, 1], -1)
 
   var e1 = new Edge(p1, p2)
   var e1a = new Edge(p2, p1)

@@ -1,1 +1,1 @@
-export { Graph } from './Graph'
+export { createGraphFromGeoJson } from './createGraphFromGeoJson'

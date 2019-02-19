@@ -1,10 +1,7 @@
-var currentPoint = null
-var sortedPointsLg = null
-var openEdges = null
-var map = null
 
 export function _renderSortedPoints (point, sortedPoints) {
-  if (map === null) map = window.map
+  const map = window.map
+  var sortedPointsLg = null
 
   L.NumberedDivIcon = createNumberDiv()
 
@@ -23,11 +20,12 @@ export function _renderSortedPoints (point, sortedPoints) {
 }
 
 export function _renderOpenEdges (point, edges) {
-  if (map === null) map = window.map
-  setCurrentPoint(point)
-
-  if (openEdges === null) openEdges = L.layerGroup([]).addTo(map)
-  else openEdges.clearLayers()
+  const map = window.map
+  const currentPoint = L.circleMarker([point.y, point.x], {
+    radius: 20,
+    color: 'green'
+  }).addTo(map)
+  var openEdges = L.layerGroup([]).addTo(map)
 
   edges.forEach((e, index) => {
     L.polyline([[e.edge.p1.y, e.edge.p1.x], [e.edge.p2.y, e.edge.p2.x]], {
@@ -36,14 +34,21 @@ export function _renderOpenEdges (point, edges) {
   })
 
   // debugger
+  openEdges.clearLayers()
+  map.removeLayer(currentPoint)
 }
 
 function setCurrentPoint (point) {
+  const map = window.map
+  let currentPoint = null
+
   if (currentPoint !== null) map.removeLayer(currentPoint)
+
   currentPoint = L.circleMarker([point.y, point.x], {
     radius: 20,
     color: 'green'
   }).addTo(map)
+
 }
 
 function createNumberDiv () {

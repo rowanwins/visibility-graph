@@ -46,7 +46,7 @@ export function angle2 (p1, p2, p3) {
 
 export function pointEdgeDistance (p1, p2, edge) {
   const ip = intersectPoint(p1, p2, edge)
-  return ip !== null ? edgeDistance(p1, ip) : 0
+  return ip !== null ? calcEdgeDistance(p1, ip) : 0
 }
 
 export function intersectPoint (p1, p2, edge) {
@@ -57,13 +57,13 @@ export function intersectPoint (p1, p2, edge) {
     const pslope = (p1.y - p2.y) / (p1.x - p2.x)
     const intersectX = edge.p1.x
     const intersectY = pslope * (intersectX - p1.x) + p1.y
-    return new Point(intersectX, intersectY)
+    return new Point([intersectX, intersectY])
   }
   if (p1.x === p2.x) {
     const eslope = (edge.p1.y - edge.p2.y) / (edge.p1.x - edge.p2.x)
     const intersectX = p1.x
     const intersectY = eslope * (intersectX - edge.p1.x) + edge.p1.y
-    return new Point(intersectX, intersectY)
+    return new Point([intersectX, intersectY])
   }
 
   const pslope = (p1.y - p2.y) / (p1.x - p2.x)
@@ -72,9 +72,9 @@ export function intersectPoint (p1, p2, edge) {
   if (pslope === eslope) return null
   const intersectX = (eslope * edge.p1.x - pslope * p1.x + p1.y - edge.p1.y) / (eslope - pslope)
   const intersectY = eslope * (intersectX - edge.p1.x) + edge.p1.y
-  return new Point(intersectX, intersectY)
+  return new Point([intersectX, intersectY])
 }
 
-export function edgeDistance (p1, p2) {
+export function calcEdgeDistance (p1, p2) {
   return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2))
 }
