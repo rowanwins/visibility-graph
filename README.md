@@ -1,7 +1,7 @@
 # visibility-graph
 Visibility graph implementation to support shortest path calculations such as [dijkstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) or [a-star](https://en.wikipedia.org/wiki/A*_search_algorithm).
 
-### [Demo](https://rowanwins.github.io/visibility-graph/index.html)
+### [Demo](https://rowanwins.github.io/visibility-graph/debug/)
 
 ## Documentation
 Valid inputs: A [polygon](http://geojson.win/#appendix-A.3) or [multi-polygon](http://geojson.win/#appendix-A.6) feature or geometry.
