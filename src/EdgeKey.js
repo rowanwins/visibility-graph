@@ -18,7 +18,8 @@ export class EdgeKey {
     if (selfDistance === otherDistance) {
       let samePoint = null
       if (otherEdgeKey.edge.containsPoint(this.edge.p1)) samePoint = this.edge.p1
-      else if (otherEdgeKey.edge.containsPoint(this.edge.p2)) samePoint = this.edge.p2
+      // else if (otherEdgeKey.edge.containsPoint(this.edge.p2)) samePoint = this.edge.p2
+      else samePoint = this.edge.p2
       const aslf = angle2(this.p1, this.p2, this.edge.getOtherPointInEdge(samePoint))
       const aot = angle2(this.p1, this.p2, otherEdgeKey.edge.getOtherPointInEdge(samePoint))
       if (aslf < aot) return true

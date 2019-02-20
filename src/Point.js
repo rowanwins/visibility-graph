@@ -3,7 +3,7 @@ import { pi1, pi2 } from './utils'
 export class Point {
 
   constructor (coords, polygonID) {
-    if (polygonID == null) polygonID = -1
+    if (polygonID === null) polygonID = -1
     this.x = coords[0]
     this.y = coords[1]
     this.polygonID = polygonID

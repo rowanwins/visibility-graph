@@ -1,6 +1,6 @@
 {
-  "name": "visibility-graph-js",
-  "version": "0.1.0",
+  "name": "visibility-graph.js",
+  "version": "0.1.1",
   "description": "A js library for creating visibility graphs",
   "main": "dist/visibilityGraph.js",
   "directories": {

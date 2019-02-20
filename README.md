@@ -11,14 +11,11 @@ Valid inputs: A [polygon](http://geojson.win/#appendix-A.3) or [multi-polygon](h
 ````
 Output is a graph from the [ngraph library](https://github.com/anvaka/ngraph.graph).
 
+**NOTE:** If you get occassional issues with how your edges are being linked try reducing the precision of your coordinates (eg 8 decimal places). 
+
 ## Using with other packages
 - Loading and saving your visibililty graph can be achieved with [ngraph.todot](https://github.com/anvaka/ngraph.todot) and [ngraph.fromdot](https://github.com/anvaka/ngraph.fromdot) packages.
 - Path finding can be achieved with the [ngraph.path](https://github.com/anvaka/ngraph.path) package.
-
-## To Do
-* Test support for multipolygons
-* Test support for geometry/feature collections
-* Improve tests
 
 
 ## References & Credits

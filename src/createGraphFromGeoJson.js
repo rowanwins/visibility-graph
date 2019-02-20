@@ -19,17 +19,18 @@ export function createGraphFromGeoJson (geojson) {
   function processGraph () {
     const g = createGraph()
     const pointsLen = points.length
+    const clonedPoints = clonePoints()
 
     for (var i = 0; i < pointsLen; i++) {
       const p = points[i]
       const prevPoint = p.prevPoint
       const nextPoint = p.nextPoint
 
-      sortPoints(p, points)
+      sortPoints(p, clonedPoints)
       // _renderSortedPoints(p, clonedPoints)
 
       const openEdges = new EdgeKeys()
-      const pointInf = new Point([INF, p.y])
+      const pointInf = new Point([INF, p.y], null)
       for (let ii = 0; ii < edges.length; ii++) {
         const e = edges[ii]
         if (e.containsPoint(p)) continue
@@ -45,7 +46,7 @@ export function createGraphFromGeoJson (geojson) {
       let prevVisible = null
 
       for (let ii = 0; ii < pointsLen; ii++) {
-        const p2 = points[ii]
+        const p2 = clonedPoints[ii]
         if (p2.isPointEqual(p)) continue
         if (openEdges.keys.length > 0) {
           for (let iii = 0; iii < p2.edges.length; iii++) {
@@ -114,14 +115,18 @@ export function createGraphFromGeoJson (geojson) {
     return p.x + ',' + p.y
   }
 
+  function clonePoints () {
+    return points.slice(0)
+  }
+
   function sortPoints (point, clonedPoints) {
     clonedPoints.sort((a, b) => {
       const angle1 = point.angleToPoint(a)
       const angle2 = point.angleToPoint(b)
       if (angle1 < angle2) return -1
       if (angle1 > angle2) return 1
-      const dist1 = calcEdgeDistance(a, point)
-      const dist2 = calcEdgeDistance(b, point)
+      const dist1 = calcEdgeDistance(point, a)
+      const dist2 = calcEdgeDistance(point, b)
       if (dist1 < dist2) return -1
       if (dist1 > dist2) return 1
       return 0
@@ -131,12 +136,12 @@ export function createGraphFromGeoJson (geojson) {
   function edgeInPolygon (p1, p2) {
     if (p1.polygonID !== p2.polygonID) return false
     if (p1.polygonID === -1 || p2.polygonID === -1) return false
-    const midPoint = new Point([(p1.x + p2.x) / 2, (p1.y + p2.y) / 2])
+    const midPoint = new Point([(p1.x + p2.x) / 2, (p1.y + p2.y) / 2], null)
     return polygonCrossing(midPoint, polygons[p1.polygonID])
   }
 
   function polygonCrossing (p1, polyEdges) {
-    const p2 = new Point([INF, p1.y])
+    const p2 = new Point([INF, p1.y], null)
     let intersectCount = 0
     let coFlag = false
     let coDir = 0

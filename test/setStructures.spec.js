@@ -40,7 +40,7 @@ test('MultiPolygon has right edges & points length', t => {
   t.is(contours[1].length, 8)
 })
 
-test('MultiPoly - Points each have edges', t => {
+test('MultiPoly - Points each have edges and next and prev points', t => {
   for (var i = 0; i < points2.length; i++) {
     t.not(points2[i].prevPoint, null)
     t.not(points2[i].nextPoint, null)
@@ -48,3 +48,9 @@ test('MultiPoly - Points each have edges', t => {
   }
 })
 
+test('MultiPoly - edges all have points', t => {
+  for (var i = 0; i < edges2.length; i++) {
+    t.not(edges2[i].p1, null)
+    t.not(edges2[i].p2, null)
+  }
+})

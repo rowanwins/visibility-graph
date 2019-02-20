@@ -30,8 +30,8 @@ test('pointEdgeDistance test', t => {
   var e2 = new Edge(p3, p4)
   var e3 = new Edge(p5, p2)
 
-  t.deepEqual(intersectPoint(p3, p4, e1), new Point([3, 3]))
-  t.deepEqual(intersectPoint(p3, p4, e1), new Point([3, 3]))
+  t.deepEqual(intersectPoint(p3, p4, e1), new Point([3, 3], null))
+  t.deepEqual(intersectPoint(p3, p4, e1), new Point([3, 3], null))
 
   t.is(pointEdgeDistance(p3, p4, e1), 1.4142135623730951)
   t.is(pointEdgeDistance(p1, p2, e2), 2)

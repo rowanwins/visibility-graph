@@ -6,8 +6,8 @@
 </template>
 
 <script>
-// import { data } from '../../test/harness/continents'
-import { aus } from '../../test/harness/australia'
+import { data } from '../../test/harness/asia'
+// import { data } from '../../test/harness/australia'
 import { createGraphFromGeoJson } from '../../src/main'
 const path = require('ngraph.path')
 
@@ -54,12 +54,14 @@ export default {
       out.forEachLinkedNode(e.target._latlng.lng + ',' + e.target._latlng.lat, function (linkedNode, link) {
         L.polyline([[linkedNode.data.y, linkedNode.data.x], [node.data.y, node.data.x]], {
           color: 'green',
-          weight: 1
+          weight: 1,
+          pane: 'shadowPane',
+          interactive: false
         }).addTo(selectionLayer)
       })
     }
 
-    var polyLayer = L.geoJson(aus, {
+    var polyLayer = L.geoJson(data, {
       noClip: true
     }).addTo(map)
 
@@ -69,13 +71,17 @@ export default {
 
     const points = turf.featureCollection([])
 
-    turf.meta.coordEach(aus, function (currentCoord) {
+    const pointsLyr = L.layerGroup([], {
+      pane: 'popupPane'
+    }).addTo(map)
+
+    turf.meta.coordEach(data, function (currentCoord) {
       points.features.push(turf.point([currentCoord[0], currentCoord[1]]))
 
       var layer = L.circleMarker([currentCoord[1], currentCoord[0]], {
         opacity: 0,
         origPoint: [currentCoord[0], currentCoord[1]]
-      }).addTo(map)
+      }).addTo(pointsLyr)
       layer.on('mouseover', highlightFeature)
       layer.on('mouseout', unhighlightFeature)
 
@@ -101,7 +107,7 @@ export default {
 
     setTimeout(function () {
       console.time('visgraph')
-      out = createGraphFromGeoJson(aus)
+      out = createGraphFromGeoJson(data)
       console.timeEnd('visgraph')
 
       pathFinder = path.nba(out, {
