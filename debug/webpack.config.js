@@ -5,7 +5,7 @@ module.exports = {
     entry: './debug/src/main.js',
     output: {
         path: __dirname,
-        publicPath: '/debug/',
+        publicPath: process.env.NODE_ENV === 'development' ? '/debug/' : 'https://rowanwins.github.io/visibility-graph/debug/',
         filename: 'build.js',
         globalObject: 'this'
     },
