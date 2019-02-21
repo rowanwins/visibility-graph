@@ -6,7 +6,8 @@ module.exports = {
     output: {
         path: __dirname,
         publicPath: '/debug/',
-        filename: 'build.js'
+        filename: 'build.js',
+        globalObject: 'this'
     },
     module: {
         rules: [
@@ -14,8 +15,12 @@ module.exports = {
                 test: /\.geojson$/,
                 loader: 'json-loader'
             },
-            {
-                test: /\.(png|jpg|ttf|gif)$/,
+               {
+                test: /\.worker\.js$/,
+                use: { loader: 'worker-loader' }
+              },
+                 {
+                test: /\.(png|jpg|ttf|gif|woff|svg)$/,
                 use: [
                     {
                         loader: 'file-loader',

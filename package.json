@@ -1,6 +1,6 @@
 {
   "name": "visibility-graph.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A js library for creating visibility graphs",
   "main": "dist/visibilityGraph.js",
   "directories": {
@@ -10,6 +10,7 @@
     "build:docs": "cross-env webpack --config debug/webpack.config.js --mode production --progress --hide-modules",
     "build": "rollup -c",
     "debug": "cross-env webpack-dev-server --config debug/webpack.config.js --mode development --open --hot",
+    "prepublish": "npm run build",
     "test": "ava --verbose",
     "test:e2e": "ava ./test/test.spec.js --verbose",
     "test:coverage": "nyc ava"
@@ -34,7 +35,9 @@
     "esm": "^3.2.5",
     "file-loader": "^1.1.4",
     "load-json-file": "^5.2.0",
+    "ngraph.fromjson": "^0.1.9",
     "ngraph.path": "^1.0.3",
+    "ngraph.tojson": "^0.1.4",
     "nyc": "^13.3.0",
     "rollup": "^1.2.1",
     "rollup-plugin-butternut": "^0.1.0",
@@ -43,12 +46,15 @@
     "rollup-plugin-strip": "^1.2.1",
     "rollup-plugin-uglify": "^6.0.2",
     "rollup-watch": "^4.0.0",
+    "ttf-loader": "^1.0.2",
     "vue": "^2.6.6",
     "vue-loader": "^15.6.3",
     "vue-template-compiler": "^2.6.6",
+    "vue-worker": "^1.2.1",
     "webpack": "^4.29.5",
     "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^3.1.14",
+    "worker-loader": "^2.0.0"
   },
   "dependencies": {
     "ngraph.graph": "0.0.15"

@@ -31,7 +31,7 @@ export function createGraphFromGeoJson (geojson) {
 
       const openEdges = new EdgeKeys()
       const pointInf = new Point([INF, p.y], null)
-      for (let ii = 0; ii < edges.length; ii++) {
+      for (let ii = 0; ii < pointsLen; ii++) {
         const e = edges[ii]
         if (e.containsPoint(p)) continue
         if (edgeIntersect(p, pointInf, e)) {
@@ -48,6 +48,8 @@ export function createGraphFromGeoJson (geojson) {
       for (let ii = 0; ii < pointsLen; ii++) {
         const p2 = clonedPoints[ii]
         if (p2.isPointEqual(p)) continue
+        if (p.angleToPoint(p2) > Math.pi) break
+
         if (openEdges.keys.length > 0) {
           for (let iii = 0; iii < p2.edges.length; iii++) {
             const e = p2.edges[iii]
@@ -100,11 +102,11 @@ export function createGraphFromGeoJson (geojson) {
       }
 
       const nodeId = createNodeId(p)
-      g.addNode(nodeId, p)
+      g.addNode(nodeId, { x: p.x, y: p.y })
 
       for (var ii = 0; ii < visible.length; ii++) {
         const otherNodeId = createNodeId(visible[ii])
-        g.addNode(otherNodeId, visible[ii])
+        g.addNode(otherNodeId, { x: visible[ii].x, y: visible[ii].y })
         g.addLink(nodeId, otherNodeId)
       }
     }

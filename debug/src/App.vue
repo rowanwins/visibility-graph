@@ -1,125 +1,31 @@
 <template>
   <div id="app">
     <div id="map"></div>
-
   </div>
 </template>
 
 <script>
-import { data } from '../../test/harness/asia'
-// import { data } from '../../test/harness/australia'
-import { createGraphFromGeoJson } from '../../src/main'
-const path = require('ngraph.path')
+// import { data as worldData } from '../../test/harness/continents'
+import { data as asiaData } from '../../test/harness/asia'
+// import { data as ausData } from '../../test/harness/australia'
+import { setupMap, setData, setupRouteLayer } from './mapHelpers'
+import { loadGraphFromFile, createGraphFromData } from './graphHelper'
 
 export default {
   name: 'app',
   mounted () {
-    var map = window.map = L.map('map', {
-      minZoom: 1,
-      maxZoom: 20,
-      center: [0, 0],
-      zoom: 2,
-      crs: L.CRS.Simple
-    })
-    const startMarker = L.marker([-17.9614, 122.2359], {
-      draggable: true
-    }).addTo(map)
-
-    const endMarker = L.marker([-42.8821, 147.3272], {
-      draggable: true
-    }).addTo(map)
-
-    startMarker.on('drag', updatePathMarkers)
-    endMarker.on('drag', updatePathMarkers)
-
-    function updatePathMarkers () {
-      polylineLyr.setLatLngs([])
-      var nearestStart = turf.nearestPoint(startMarker.toGeoJSON(), points)
-      var nearestEnd = turf.nearestPoint(endMarker.toGeoJSON(), points)
-      foundPath = pathFinder.find(createNodeId(nearestStart), createNodeId(nearestEnd))
-      drawPath()
+    setupMap()
+    setData(asiaData)
+    setupRouteLayer()
+    this.createGraph()
+  },
+  methods: {
+    createGraph: function () {
+      createGraphFromData(asiaData)
+    },
+    getGraphFile: function () {
+      loadGraphFromFile('asia_scenario.json')
     }
-
-    var selectionLayer = L.layerGroup([]).addTo(map)
-
-    function unhighlightFeature () {
-      selectionLayer.clearLayers()
-    }
-
-    function highlightFeature (e) {
-      selectionLayer.clearLayers()
-
-      const node = out.getNode(e.target._latlng.lng + ',' + e.target._latlng.lat)
-
-      out.forEachLinkedNode(e.target._latlng.lng + ',' + e.target._latlng.lat, function (linkedNode, link) {
-        L.polyline([[linkedNode.data.y, linkedNode.data.x], [node.data.y, node.data.x]], {
-          color: 'green',
-          weight: 1,
-          pane: 'shadowPane',
-          interactive: false
-        }).addTo(selectionLayer)
-      })
-    }
-
-    var polyLayer = L.geoJson(data, {
-      noClip: true
-    }).addTo(map)
-
-    map.fitBounds(polyLayer.getBounds(), {
-      padding: [20, 20]
-    })
-
-    const points = turf.featureCollection([])
-
-    const pointsLyr = L.layerGroup([], {
-      pane: 'popupPane'
-    }).addTo(map)
-
-    turf.meta.coordEach(data, function (currentCoord) {
-      points.features.push(turf.point([currentCoord[0], currentCoord[1]]))
-
-      var layer = L.circleMarker([currentCoord[1], currentCoord[0]], {
-        opacity: 0,
-        origPoint: [currentCoord[0], currentCoord[1]]
-      }).addTo(pointsLyr)
-      layer.on('mouseover', highlightFeature)
-      layer.on('mouseout', unhighlightFeature)
-
-    }, true)
-
-    let out = null
-    let foundPath = null
-    let pathFinder = null
-    const polylineLyr = L.polyline([], {
-      color: 'red'
-    }).addTo(map)
-
-    function drawPath () {
-      const pathLatLngs = foundPath.map(function (node) {
-        return [node.data.y, node.data.x]
-      })
-      polylineLyr.setLatLngs(pathLatLngs)
-    }
-
-    function createNodeId (p) {
-      return p.geometry.coordinates[0] + ',' + p.geometry.coordinates[1]
-    }
-
-    setTimeout(function () {
-      console.time('visgraph')
-      out = createGraphFromGeoJson(data)
-      console.timeEnd('visgraph')
-
-      pathFinder = path.nba(out, {
-        distance (fromNode, toNode) {
-          const dx = fromNode.data.x - toNode.data.x
-          const dy = fromNode.data.y - toNode.data.y
-          return Math.sqrt(dx * dx + dy * dy)
-        }
-      })
-      updatePathMarkers()
-      drawPath()
-    }, 400)
   }
 }
 </script>
@@ -132,8 +38,8 @@ export default {
     }
 
   .leaflet-div-icon {
-    background: white;
-    border: 2px solid;
+    background: #EB3223;
+    border: 2px solid white;
     border-radius:  60%;
   }
 
@@ -144,5 +50,9 @@ export default {
     width: 2 6px;
     height: 2 6px;
     text-align: center;
+  }
+
+  .leaflet-container {
+    background: #13294F;
   }
 </style>
