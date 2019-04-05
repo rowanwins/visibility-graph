@@ -3,13 +3,11 @@
   "version": "0.1.2",
   "description": "A js library for creating visibility graphs",
   "main": "dist/visibilityGraph.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "build:docs": "cross-env webpack --config debug/webpack.config.js --mode=production --progress --hide-modules",
+    "build:docs": "cross-env webpack --config debug/webpack.config.js --env.NODE_ENV=production --progress --hide-modules",
     "build": "rollup -c",
-    "debug": "cross-env webpack-dev-server --config debug/webpack.config.js --mode=development --open --hot",
+    "debug": "cross-env webpack-dev-server --config debug/webpack.config.js --env.NODE_ENV=development --open --hot",
+    "deleteWorkers": "shx rm debug/*.worker.js",
     "prepublish": "npm run build",
     "test": "ava --verbose",
     "test:e2e": "ava ./test/test.spec.js --verbose",
@@ -46,6 +44,7 @@
     "rollup-plugin-strip": "^1.2.1",
     "rollup-plugin-uglify": "^6.0.2",
     "rollup-watch": "^4.0.0",
+    "shx": "^0.3.2",
     "ttf-loader": "^1.0.2",
     "vue": "^2.6.6",
     "vue-loader": "^15.6.3",

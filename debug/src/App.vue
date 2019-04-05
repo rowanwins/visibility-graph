@@ -5,9 +5,7 @@
 </template>
 
 <script>
-// import { data as worldData } from '../../test/harness/continents'
 import { data as asiaData } from '../../test/harness/asia'
-// import { data as ausData } from '../../test/harness/australia'
 import { setupMap, setData, setupRouteLayer } from './mapHelpers'
 import { loadGraphFromFile, createGraphFromData } from './graphHelper'
 
