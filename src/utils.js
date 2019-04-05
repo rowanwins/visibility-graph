@@ -24,7 +24,7 @@ export function edgeIntersect (p1, q1, edge) {
 }
 
 export function ccw (a, b, c) {
-  const area = ((b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)) * T / T2
+  const area = Math.round(((b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)) * T) / T2
   if (area > 0) return 1
   if (area < 0) return -1
   return 0

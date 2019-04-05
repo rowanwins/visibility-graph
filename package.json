@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "build:docs": "cross-env webpack --config debug/webpack.config.js --mode production --progress --hide-modules",
+    "build:docs": "cross-env webpack --config debug/webpack.config.js --mode=production --progress --hide-modules",
     "build": "rollup -c",
-    "debug": "cross-env webpack-dev-server --config debug/webpack.config.js --mode development --open --hot",
+    "debug": "cross-env webpack-dev-server --config debug/webpack.config.js --mode=development --open --hot",
     "prepublish": "npm run build",
     "test": "ava --verbose",
     "test:e2e": "ava ./test/test.spec.js --verbose",

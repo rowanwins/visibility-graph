@@ -2,7 +2,8 @@
   "extends": ["plugin:vue-libs/recommended"],
   "rules": {
     "padded-blocks": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "indent": ["error", 2]
   },
   "globals": {
     "L": true,

@@ -1,7 +1,7 @@
 import fromjson from 'ngraph.fromjson'
 import path from 'ngraph.path'
 
-import Worker from './graphCreation.worker.js'
+import Worker from 'worker-loader!./graphCreation.worker.js'
 
 import { setPathFinder, setGraph, clearGraphRelatedData } from './mapHelpers'
 
