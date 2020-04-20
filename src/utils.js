@@ -22,9 +22,9 @@ export function edgeIntersect (p1, q1, edge) {
 }
 
 export function ccw (a, b, c) {
-  const r = orient2d(a.x, a.y, b.x, b.y, c.x, c.y);
-  if (r > 0) return -1
-  if (r < 0) return 1
+  const r = orient2d(c.x, c.y, b.x, b.y, a.x, a.y);
+  if (r > 0) return 1
+  if (r < 0) return -1
   return 0
 }
 

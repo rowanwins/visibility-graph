@@ -37,7 +37,7 @@ export function processPoint (p, pointsLen, scan, visibilityGraph) {
   const nextPoint = p.nextPoint
 
   sortPoints(p, clonedPoints)
-  _renderSortedPoints(p, clonedPoints)
+  // _renderSortedPoints(p, clonedPoints)
 
   const openEdges = new EdgeKeys()
   const pointInf = new Point([Infinity, p.y], -1)
@@ -49,7 +49,7 @@ export function processPoint (p, pointsLen, scan, visibilityGraph) {
       openEdges.addKey(new EdgeKey(p, pointInf, e))
     }
   }
-  _renderOpenEdges(p, openEdges.keys)
+  // _renderOpenEdges(p, openEdges.keys)
 
   const visible = []
   let prev = null

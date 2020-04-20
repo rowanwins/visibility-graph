@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import data from '../../test/harness/polygon.geojson'
+// import data from '../../test/harness/asia.geojson'
 // import data from '../../test/harness/bayarea3.geojson'
-// import data from '../../test/harness/continents2.geojson'
+import data from '../../test/harness/continents2.geojson'
 import { setupMap, setData, setupRouteLayer } from './mapHelpers'
 import { loadGraphFromFile, createGraphFromData } from './graphHelper'
 
