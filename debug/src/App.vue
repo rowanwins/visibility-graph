@@ -5,7 +5,9 @@
 </template>
 
 <script>
-import { data as asiaData } from '../../test/harness/asia'
+import data from '../../test/harness/polygon.geojson'
+// import data from '../../test/harness/bayarea3.geojson'
+// import data from '../../test/harness/continents2.geojson'
 import { setupMap, setData, setupRouteLayer } from './mapHelpers'
 import { loadGraphFromFile, createGraphFromData } from './graphHelper'
 
@@ -13,13 +15,13 @@ export default {
   name: 'app',
   mounted () {
     setupMap()
-    setData(asiaData)
+    setData(data)
     setupRouteLayer()
     this.createGraph()
   },
   methods: {
     createGraph: function () {
-      createGraphFromData(asiaData)
+      createGraphFromData(data)
     },
     getGraphFile: function () {
       loadGraphFromFile('asia_scenario.json')

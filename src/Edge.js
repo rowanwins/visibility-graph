@@ -1,4 +1,4 @@
-export class Edge {
+export default class Edge {
   constructor (p1, p2) {
     this.p1 = p1
     this.p2 = p2
@@ -18,7 +18,6 @@ export class Edge {
   }
 
   containsPoint (point) {
-    if (this.p1.isPointEqual(point) || this.p2.isPointEqual(point)) return true
-    return false
+    return this.p1.isPointEqual(point) || this.p2.isPointEqual(point)
   }
 }

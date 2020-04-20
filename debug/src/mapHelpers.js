@@ -5,13 +5,13 @@ let selectionLayer = null
 let polyLayer = null
 let points = null
 let pointsLyr = null
-let graphData = null
+let vg = null
 let foundPath = null
 let pathFinder = null
 let routeLayer = null
 
 export function setupMap () {
-  map = L.map('map', {
+  map = window.map = L.map('map', {
     minZoom: 1,
     maxZoom: 20,
     center: [0, 0],
@@ -86,9 +86,10 @@ export function setPathFinder (pathGraph) {
 
 function updatePathMarkers () {
   routeLayer.setLatLngs([])
-  var nearestStart = turf.nearestPoint(startMarker.toGeoJSON(), points)
-  var nearestEnd = turf.nearestPoint(endMarker.toGeoJSON(), points)
-  foundPath = pathFinder.find(createNodeId(nearestStart), createNodeId(nearestEnd))
+  const s = startMarker.toGeoJSON()
+  const d = endMarker.toGeoJSON()
+  const [a, b] = vg.shortestPath(s, d)
+  foundPath = pathFinder.find(a.nodeId, b.nodeId)
   drawPath()
 }
 
@@ -99,24 +100,20 @@ function drawPath () {
   routeLayer.setLatLngs(pathLatLngs)
 }
 
-function createNodeId (p) {
-  return p.geometry.coordinates[0] + ',' + p.geometry.coordinates[1]
-}
-
 function unhighlightFeature () {
   selectionLayer.clearLayers()
 }
 
-export function setGraph (gd) {
-  graphData = gd
+export function setGraph (completedGraph) {
+  vg = completedGraph
 }
 
 function highlightFeature (e) {
   selectionLayer.clearLayers()
+  const nodeId = vg.getdNodeIdByLatLon([e.target._latlng.lng, e.target._latlng.lat])
+  const node = vg.graph.getNode(nodeId)
 
-  const node = graphData.getNode(e.target._latlng.lng + ',' + e.target._latlng.lat)
-
-  graphData.forEachLinkedNode(e.target._latlng.lng + ',' + e.target._latlng.lat, function (linkedNode, link) {
+  vg.graph.forEachLinkedNode(nodeId, function (linkedNode, link) {
     L.polyline([[linkedNode.data.y, linkedNode.data.x], [node.data.y, node.data.x]], {
       weight: 0.5,
       opacity: 0.8,

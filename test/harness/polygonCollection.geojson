@@ -1,4 +1,4 @@
-export var mp = {
+{
   'type': 'Feature',
   'properties': {},
   'geometry': {
