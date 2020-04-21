@@ -5,9 +5,9 @@
 </template>
 
 <script>
-// import data from '../../test/harness/asia.geojson'
+import data from '../../test/harness/australia.geojson'
 // import data from '../../test/harness/bayarea3.geojson'
-import data from '../../test/harness/continents2.geojson'
+// import data from '../../test/harness/continents2.geojson'
 import { setupMap, setData, setupRouteLayer } from './mapHelpers'
 import { loadGraphFromFile, createGraphFromData } from './graphHelper'
 
@@ -18,6 +18,12 @@ export default {
     setData(data)
     setupRouteLayer()
     this.createGraph()
+    // const that = this
+    // setTimeout(function () {
+    //     console.log('starting')
+    //     that.createGraph()
+    //     console.log('stopping')
+    // }, 3000);
   },
   methods: {
     createGraph: function () {

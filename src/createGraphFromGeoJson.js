@@ -28,7 +28,6 @@ function processGraph (visibilityGraph) {
 }
 
 export function processPoint (p, pointsLen, scan, visibilityGraph) {
-  const points = visibilityGraph._points
   const clonedPoints = visibilityGraph._clonedPoints
   const edges = visibilityGraph._edges
   const polygons = visibilityGraph._polygons
