@@ -1,4 +1,4 @@
-export class EdgeKeys {
+export default class EdgeKeys {
 
   constructor () {
     this.keys = []

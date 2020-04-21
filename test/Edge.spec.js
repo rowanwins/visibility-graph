@@ -1,6 +1,6 @@
 import test from 'ava'
-import { Edge } from '../src/Edge'
-import { Point } from '../src/Point'
+import Edge from '../src/Edge'
+import Point from '../src/Point'
 
 test('Edge test', t => {
 

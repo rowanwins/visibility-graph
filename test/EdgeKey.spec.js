@@ -1,7 +1,7 @@
 import test from 'ava'
-import { Edge } from '../src/Edge'
-import { Point } from '../src/Point'
-import { EdgeKey } from '../src/EdgeKey'
+import Edge from '../src/Edge'
+import Point from '../src/Point'
+import EdgeKey from '../src/EdgeKey'
 
 test('EdgeKey test', t => {
 
@@ -27,10 +27,10 @@ test('EdgeKey test', t => {
 
 test('EdgeKey less than test', t => {
 
-  var p1 = new Point([3, 1])
-  var p2 = new Point([3, 5])
-  var p3 = new Point([2, 2])
-  var p4 = new Point([4, 4])
+  var p1 = new Point([3, 1], -1)
+  var p2 = new Point([3, 5], -1)
+  var p3 = new Point([2, 2], -1)
+  var p4 = new Point([4, 4], -1)
 
   var e1 = new Edge(p1, p2)
   var e2 = new Edge(p3, p4)

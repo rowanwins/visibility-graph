@@ -4,7 +4,7 @@ import butternut from 'rollup-plugin-butternut'
 import strip from 'rollup-plugin-strip'
 
 export default {
-  input: './src/main.js',
+  input: './src/VisibilityGraph.js',
   output: {
     format: 'umd',
     name: 'visibilityGraph',

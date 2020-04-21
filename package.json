@@ -32,6 +32,7 @@
     "eslint-plugin-vue-libs": "^1.2.0",
     "esm": "^3.2.5",
     "file-loader": "^1.1.4",
+    "json-loader": "^0.5.7",
     "load-json-file": "^5.2.0",
     "ngraph.fromjson": "^0.1.9",
     "ngraph.path": "^1.0.3",
@@ -56,6 +57,9 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "ngraph.graph": "0.0.15"
+    "ngraph.graph": "0.0.15",
+    "point-in-polygon-hao": "0.0.6",
+    "robust-predicates": "^2.0.4",
+    "web-worker": "^1.0.0"
   }
 }
