@@ -1,13 +1,12 @@
 import EdgeKeys from './EdgeKeys'
 import EdgeKey from './EdgeKey'
 import Point from './Point'
-import inside from 'point-in-polygon-hao'
 
 import { edgeIntersect, onSegment, ccw, calcEdgeDistance } from './utils'
 import { _renderSortedPoints, _renderOpenEdges } from './debug' //eslint-disable-line
 
-export const FULL_PROCESS = 0;
-export const HALF_PROCESS = 1;
+export const FULL_PROCESS = 0
+export const HALF_PROCESS = 1
 
 export function createGraphFromGeoJson (visibilityGraph) {
   processGraph(visibilityGraph)
@@ -20,7 +19,7 @@ export function addSinglePoint (visibilityGraph, p) {
 function processGraph (visibilityGraph) {
   const points = visibilityGraph._points
   const pointsLen = points.length
-  const scan = FULL_PROCESS
+  const scan = HALF_PROCESS
   for (var i = 0; i < pointsLen; i++) {
     const p = points[i]
     processPoint(p, pointsLen, scan, visibilityGraph)
@@ -48,6 +47,7 @@ export function processPoint (p, pointsLen, scan, visibilityGraph) {
       openEdges.addKey(new EdgeKey(p, pointInf, e))
     }
   }
+  // console.log(openEdges.keys.length)
   // _renderOpenEdges(p, openEdges.keys)
 
   const visible = []
@@ -57,7 +57,9 @@ export function processPoint (p, pointsLen, scan, visibilityGraph) {
   for (let ii = 0; ii < pointsLen; ii++) {
     const p2 = clonedPoints[ii]
     if (p2.isPointEqual(p)) continue
-    if (scan === HALF_PROCESS && p.angleToPoint(p2) > Math.pi) break
+    if (scan === HALF_PROCESS && p.angleToPoint(p2) > Math.PI) {
+      break
+    }
 
     if (openEdges.keys.length > 0) {
       for (let iii = 0; iii < p2.edges.length; iii++) {

@@ -24,7 +24,7 @@ The process of creating a visibility graph can be slow depending on the number o
 | --------- | --------------- | ------------- | ------------------------------- |
 | Australia | 250             | 1 second      | 300kb                           |
 | Asia      | 1400            | 4 seconds     | 100ms / 5.2MB                   |
-| World     | 4400            | 50 seconds    |                                 |
+| World     | 4400            | 30 seconds    |                                 |
 
 ## References & Credits
 * Based on [pyvisgraph](https://github.com/TaipanRex/pyvisgraph) and associated blog posts

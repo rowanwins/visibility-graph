@@ -1,5 +1,5 @@
 import Point from './Point'
-import {orient2d} from 'robust-predicates';
+import { orient2d } from 'robust-predicates'
 
 export const pi1 = Math.PI * 3 / 2
 export const pi2 = Math.PI / 2
@@ -22,7 +22,7 @@ export function edgeIntersect (p1, q1, edge) {
 }
 
 export function ccw (a, b, c) {
-  const r = orient2d(c.x, c.y, b.x, b.y, a.x, a.y);
+  const r = orient2d(c.x, c.y, b.x, b.y, a.x, a.y)
   if (r > 0) return 1
   if (r < 0) return -1
   return 0
