@@ -25,6 +25,8 @@
     ]
   },
   "devDependencies": {
+    "@turf/distance": "^6.5.0",
+    "@turf/truncate": "^6.5.0",
     "ava": "^1.2.1",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",

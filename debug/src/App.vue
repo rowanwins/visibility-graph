@@ -5,17 +5,17 @@
 </template>
 
 <script>
-import data from '../../test/harness/australia.geojson'
-// import data from '../../test/harness/bayarea3.geojson'
-// import data from '../../test/harness/continents2.geojson'
+import data from '../../test/harness/asia.geojson'
 import { setupMap, setData, setupRouteLayer } from './mapHelpers'
-import { loadGraphFromFile, createGraphFromData } from './graphHelper'
+import { loadGraphFromFile, createGraphFromData, createGraphFromDataUsingWorker } from './graphHelper'
+
+const truncatedData = data
 
 export default {
   name: 'app',
   mounted () {
     setupMap()
-    setData(data)
+    setData(truncatedData)
     setupRouteLayer()
     this.createGraph()
     // const that = this
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     createGraph: function () {
-      createGraphFromData(data)
+      createGraphFromDataUsingWorker(truncatedData)
     },
     getGraphFile: function () {
       loadGraphFromFile('asia_scenario.json')

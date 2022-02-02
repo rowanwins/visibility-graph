@@ -35,11 +35,16 @@ export function onSegment (p, q, r) {
   return false
 }
 
+const COLIN_TOLERANCE = 10
+const T = Math.pow(10, COLIN_TOLERANCE)
+const T2 = Math.pow(10, COLIN_TOLERANCE)
+
 export function angle2 (p1, p2, p3) {
   const a = Math.pow((p3.x - p2.x), 2) + Math.pow((p3.y - p2.y), 2)
   const b = Math.pow((p3.x - p1.x), 2) + Math.pow((p3.y - p1.y), 2)
   const c = Math.pow((p2.x - p1.x), 2) + Math.pow((p2.y - p1.y), 2)
-  return Math.acos((a + c - b) / (2 * Math.sqrt(a) * Math.sqrt(c)))
+  const cos = (a + c - b) / (2 * Math.sqrt(a) * Math.sqrt(c))
+  return Math.acos(parseInt(cos * T) / T2)
   // const d = (a + c - b)
   // const e = (2 * Math.sqrt(a) * Math.sqrt(c))
   // const f = Math.acos(d / e)

@@ -24,7 +24,7 @@ export default class Point {
     if (this.isPointEqual(otherPoint)) return 0
     const dx = otherPoint.x - this.x
     const dy = otherPoint.y - this.y
-    if (dx === 0) return dy < 1 ? pi1 : pi2
+    if (dx === 0) return dy < 0 ? pi1 : pi2
     if (dy === 0) return dx < 0 ? Math.PI : 0
     if (dx < 0) return Math.PI + Math.atan(dy / dx)
     if (dy < 0) return 2 * Math.PI + Math.atan(dy / dx)

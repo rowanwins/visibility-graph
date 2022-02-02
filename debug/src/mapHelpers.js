@@ -85,6 +85,7 @@ export function setPathFinder (pathGraph) {
 }
 
 function updatePathMarkers () {
+  if (vg === null) return
   routeLayer.setLatLngs([])
   const s = startMarker.toGeoJSON()
   const d = endMarker.toGeoJSON()
@@ -109,6 +110,8 @@ export function setGraph (completedGraph) {
 }
 
 function highlightFeature (e) {
+  if (vg === null) return
+
   selectionLayer.clearLayers()
   const nodeId = vg.getdNodeIdByLatLon([e.target._latlng.lng, e.target._latlng.lat])
   const node = vg.graph.getNode(nodeId)

@@ -35,20 +35,26 @@ export function createGraphFromData (data) {
   const timeTakenToCreate = parseInt(endCreation - startCreation)
   console.log('Time to construct: ', timeTakenToCreate)
   setGraph(vg)
-  findRouteThroughGraph(vg.graph)  
-  
-  // const worker = new Worker() //eslint-disable-line
-  // worker.postMessage({vg: vg, d: data})
-  // worker.onmessage = function (e) {
-  //   const endCreation = window.performance.now()
-  //   const timeTakenToCreate = parseInt(endCreation - startCreation)
-  //   console.log('Time to construct: ', timeTakenToCreate)
-  //   // console.log(e.data)
-  //   // const graph = fromjson(e.data)
-  //   // console.log(graph.getNodesCount())
-  //   setGraph(vg)
-  //   // findRouteThroughGraph(graph)
-  // }
+  findRouteThroughGraph(vg.graph)
+}
+
+export function createGraphFromDataUsingWorker (data) {
+  clearGraphRelatedData()
+
+  const startCreation = window.performance.now()
+  const worker = new Worker() //eslint-disable-line
+  worker.postMessage({ data: data })
+  worker.onmessage = function (e) {
+    const endCreation = window.performance.now()
+    const timeTakenToCreate = parseInt(endCreation - startCreation)
+    console.log('Time to construct: ', timeTakenToCreate)
+
+    const graph = fromjson(e.data)
+    const vg = new VisibilityGraph()
+    vg.loadGraphFromJson(data, graph)
+    setGraph(vg)
+    findRouteThroughGraph(vg.graph)
+  }
 }
 
 export function findRouteThroughGraph (graph) {

@@ -29,7 +29,7 @@ export default class VisibilityGraph {
   }
 
   loadGraphFromJson (geojson, jsonGraph) {
-      setupStructure(geojson, this)
+      setupStructure(this, geojson)
       this.graph = jsonGraph
   }
 
