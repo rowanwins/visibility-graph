@@ -1,6 +1,6 @@
 {
   "name": "visibility-graph.js",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "A js library for creating visibility graphs",
   "main": "dist/visibilityGraph.js",
   "scripts": {
@@ -60,8 +60,6 @@
   },
   "dependencies": {
     "ngraph.graph": "0.0.15",
-    "point-in-polygon-hao": "0.0.6",
-    "robust-predicates": "^2.0.4",
-    "web-worker": "^1.0.0"
+    "robust-predicates": "^2.0.4"
   }
 }

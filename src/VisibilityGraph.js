@@ -5,39 +5,40 @@ import Point from './Point'
 
 export default class VisibilityGraph {
   constructor () {
-      this.graph = null
+    this.graph = null
 
-      this._points = []
-      this._clonedPoints = []
-      this._edges = []
-      this._polygons = []
-      this._lastOrigin = null
-      this._lastDestination = null
+    this._points = []
+    this._clonedPoints = []
+    this._edges = []
+    this._polygons = []
+
+    this._lastOrigin = null
+    this._lastDestination = null
   }
 
   createGraphFromGeoJson (geojson) {
-      setupStructure(this, geojson)
-      this.graph = createGraph()
-      createGraphFromGeoJson(this, geojson)
+    setupStructure(this, geojson)
+    this.graph = createGraph()
+    createGraphFromGeoJson(this, geojson)
   }
 
-  getdNodeIdByLatLon (latLon) {
+  getNodeIdByLatLon (latLon) {
     for (var i = 0; i < this._points.length; i++) {
-      if (this._points[i].x === latLon[0] && this._points[i].y === latLon[1] ) return this._points[i].nodeId
+      if (this._points[i].x === latLon[0] && this._points[i].y === latLon[1]) return this._points[i].nodeId
     }
     return null
   }
 
   loadGraphFromJson (geojson, jsonGraph) {
-      setupStructure(this, geojson)
-      this.graph = jsonGraph
+    setupStructure(this, geojson)
+    this.graph = jsonGraph
   }
 
   saveGraphToJson () {
 
   }
 
-  shortestPath (origin, destination) {
+  addStartAndEndPointsToGraph (origin, destination) {
     if (this._lastOrigin !== null) {
       this.graph.removeNode(this._lastOrigin.nodeId)
       this.graph.removeNode(this._lastDestination.nodeId)
@@ -48,7 +49,9 @@ export default class VisibilityGraph {
 
     addSinglePoint(this, this._lastOrigin)
     addSinglePoint(this, this._lastDestination)
-    return [this._lastOrigin, this._lastDestination]
+    return {
+      startNode: this._lastOrigin,
+      endNode: this._lastDestination
+    }
   }
-
 }

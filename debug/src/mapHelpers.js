@@ -89,8 +89,8 @@ function updatePathMarkers () {
   routeLayer.setLatLngs([])
   const s = startMarker.toGeoJSON()
   const d = endMarker.toGeoJSON()
-  const [a, b] = vg.shortestPath(s, d)
-  foundPath = pathFinder.find(a.nodeId, b.nodeId)
+  const nodes = vg.addStartAndEndPointsToGraph(s, d)
+  foundPath = pathFinder.find(nodes.startNode.nodeId, nodes.endNode.nodeId)
   drawPath()
 }
 
@@ -113,7 +113,7 @@ function highlightFeature (e) {
   if (vg === null) return
 
   selectionLayer.clearLayers()
-  const nodeId = vg.getdNodeIdByLatLon([e.target._latlng.lng, e.target._latlng.lat])
+  const nodeId = vg.getNodeIdByLatLon([e.target._latlng.lng, e.target._latlng.lat])
   const node = vg.graph.getNode(nodeId)
 
   vg.graph.forEachLinkedNode(nodeId, function (linkedNode, link) {
