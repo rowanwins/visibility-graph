@@ -1,6 +1,6 @@
 {
   "name": "visibility-graph.js",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "A js library for creating visibility graphs",
   "main": "dist/visibilityGraph.js",
   "scripts": {
@@ -25,6 +25,8 @@
     ]
   },
   "devDependencies": {
+    "@turf/distance": "^6.5.0",
+    "@turf/truncate": "^6.5.0",
     "ava": "^1.2.1",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
@@ -32,6 +34,7 @@
     "eslint-plugin-vue-libs": "^1.2.0",
     "esm": "^3.2.5",
     "file-loader": "^1.1.4",
+    "json-loader": "^0.5.7",
     "load-json-file": "^5.2.0",
     "ngraph.fromjson": "^0.1.9",
     "ngraph.path": "^1.0.3",
@@ -56,6 +59,7 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "ngraph.graph": "0.0.15"
+    "ngraph.graph": "0.0.15",
+    "robust-predicates": "^2.0.4"
   }
 }

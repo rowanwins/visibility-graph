@@ -1,8 +1,8 @@
 import test from 'ava'
-import { Edge } from '../src/Edge'
-import { Point } from '../src/Point'
-import { EdgeKey } from '../src/EdgeKey'
-import { EdgeKeys } from '../src/EdgeKeys'
+import Edge from '../src/Edge'
+import Point from '../src/Point'
+import EdgeKey from '../src/EdgeKey'
+import EdgeKeys from '../src/EdgeKeys'
 
 test('EdgeKey test', t => {
 

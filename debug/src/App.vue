@@ -5,21 +5,29 @@
 </template>
 
 <script>
-import { data as asiaData } from '../../test/harness/asia'
+import data from '../../test/harness/asia.geojson'
 import { setupMap, setData, setupRouteLayer } from './mapHelpers'
-import { loadGraphFromFile, createGraphFromData } from './graphHelper'
+import { loadGraphFromFile, createGraphFromData, createGraphFromDataUsingWorker } from './graphHelper'
+
+const truncatedData = data
 
 export default {
   name: 'app',
   mounted () {
     setupMap()
-    setData(asiaData)
+    setData(truncatedData)
     setupRouteLayer()
     this.createGraph()
+    // const that = this
+    // setTimeout(function () {
+    //     console.log('starting')
+    //     that.createGraph()
+    //     console.log('stopping')
+    // }, 3000);
   },
   methods: {
     createGraph: function () {
-      createGraphFromData(asiaData)
+      createGraphFromDataUsingWorker(truncatedData)
     },
     getGraphFile: function () {
       loadGraphFromFile('asia_scenario.json')

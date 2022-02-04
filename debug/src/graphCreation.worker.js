@@ -1,9 +1,8 @@
-import { createGraphFromGeoJson } from '../../src/main'
+import VisibilityGraph from '../../src/VisibilityGraph'
 var tojson = require('ngraph.tojson')
 
 self.addEventListener('message', function (e) {
-  const outGraph = createGraphFromGeoJson(e.data)
-  const jsonContent = tojson(outGraph)
-
-  self.postMessage(jsonContent)
+  const vg = new VisibilityGraph()
+  vg.createGraphFromGeoJson(e.data.data)
+  self.postMessage(tojson(vg.graph))
 }, false)

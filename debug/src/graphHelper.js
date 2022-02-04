@@ -1,5 +1,6 @@
 import fromjson from 'ngraph.fromjson'
 import path from 'ngraph.path'
+import VisibilityGraph from '../../src/VisibilityGraph'
 
 import Worker from './graphCreation.worker.js'
 
@@ -26,19 +27,33 @@ export function loadGraphFromFile (filename) {
 
 export function createGraphFromData (data) {
   clearGraphRelatedData()
-  const worker = new Worker() //eslint-disable-line
 
   const startCreation = window.performance.now()
-  worker.postMessage(data)
+  const vg = new VisibilityGraph()
+  vg.createGraphFromGeoJson(data)
+  const endCreation = window.performance.now()
+  const timeTakenToCreate = parseInt(endCreation - startCreation)
+  console.log('Time to construct: ', timeTakenToCreate)
+  setGraph(vg)
+  findRouteThroughGraph(vg.graph)
+}
 
+export function createGraphFromDataUsingWorker (data) {
+  clearGraphRelatedData()
+
+  const startCreation = window.performance.now()
+  const worker = new Worker() //eslint-disable-line
+  worker.postMessage({ data: data })
   worker.onmessage = function (e) {
     const endCreation = window.performance.now()
     const timeTakenToCreate = parseInt(endCreation - startCreation)
     console.log('Time to construct: ', timeTakenToCreate)
+
     const graph = fromjson(e.data)
-    console.log(graph.getNodesCount())
-    setGraph(graph)
-    findRouteThroughGraph(graph)
+    const vg = new VisibilityGraph()
+    vg.loadGraphFromJson(data, graph)
+    setGraph(vg)
+    findRouteThroughGraph(vg.graph)
   }
 }
 

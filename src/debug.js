@@ -16,7 +16,7 @@ export function _renderSortedPoints (point, sortedPoints) {
     }).addTo(sortedPointsLg)
   })
 
-  // debugger
+  debugger
 }
 
 export function _renderOpenEdges (point, edges) {

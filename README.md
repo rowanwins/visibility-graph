@@ -7,9 +7,33 @@ Visibility graph implementation to support shortest path calculations such as [d
 Valid inputs: A [polygon](http://geojson.win/#appendix-A.3) or [multi-polygon](http://geojson.win/#appendix-A.6) feature or geometry.
 
 ````js
-  var out = createGraphFromGeoJson(MultiPolygon)
-````
-Output is a graph from the [ngraph library](https://github.com/anvaka/ngraph.graph).
+  import VisibilityGraph from 'visibility-graph.js'
+  import path from 'ngraph.path'
+
+  // Create the visibility graph from the geojson data
+  const vg = new VisibilityGraph()
+  vg.createGraphFromGeoJson(data)
+
+  // Use the 'ngraph.path' library to find a way 
+  //through the newly created visibility graph
+  const pathFinder = path.nba(vg.graph, {
+    distance (fromNode, toNode) {
+      const dx = fromNode.data.x - toNode.data.x
+      const dy = fromNode.data.y - toNode.data.y
+      return Math.sqrt(dx * dx + dy * dy)
+    }
+  })
+
+  // Add the start and endpoints to the graph  
+  const nodes = vg.addStartAndEndPointsToGraph(
+    {type: 'Feature', geometry: {type: 'Point', coordinates: [0, 0]}},
+    {type: 'Feature', geometry: {type: 'Point', coordinates: [10, 10]}}
+  )
+  
+  // And finally retrive the optimal path 
+  const optimalPath = pathFinder.find(nodes.startNode.nodeId, nodes.endNode.nodeId)
+
+  ````
 
 **NOTE:** If you get occassional issues with how your edges are being linked try reducing the precision of your coordinates (eg 8 decimal places). 
 
@@ -24,7 +48,11 @@ The process of creating a visibility graph can be slow depending on the number o
 | --------- | --------------- | ------------- | ------------------------------- |
 | Australia | 250             | 1 second      | 300kb                           |
 | Asia      | 1400            | 4 seconds     | 100ms / 5.2MB                   |
-| World     | 4400            | 50 seconds    |                                 |
+| World     | 4400            | 20 seconds    |                                 |
+
+
+Depending on your requirements you may also be able to convert your input data if it has concave polygons, to only having convex polygons, this may reduce redundant nodes in the graph.
+
 
 ## References & Credits
 * Based on [pyvisgraph](https://github.com/TaipanRex/pyvisgraph) and associated blog posts
