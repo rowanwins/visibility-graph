@@ -1,10 +1,14 @@
 import createGraph from 'ngraph.graph'
+import fromJSON from 'ngraph.fromjson'
+import toJSON from 'ngraph.tojson'
+
 import { createGraphFromGeoJson, addSinglePoint } from './createGraphFromGeoJson'
 import { setupStructure } from './setupStructure'
 import Point from './Point'
 
 export default class VisibilityGraph {
-  constructor () {
+  constructor (geojson, jsonGraph) {
+    this._geojson = geojson
     this.graph = null
 
     this._points = []
@@ -14,12 +18,14 @@ export default class VisibilityGraph {
 
     this._lastOrigin = null
     this._lastDestination = null
-  }
+    setupStructure(this)
 
-  createGraphFromGeoJson (geojson) {
-    setupStructure(this, geojson)
-    this.graph = createGraph()
-    createGraphFromGeoJson(this, geojson)
+    if (jsonGraph) {
+      this.graph = fromJSON(jsonGraph)
+    } else {
+      this.graph = createGraph()
+      createGraphFromGeoJson(this)
+    }
   }
 
   getNodeIdByLatLon (latLon) {
@@ -29,13 +35,8 @@ export default class VisibilityGraph {
     return null
   }
 
-  loadGraphFromJson (geojson, jsonGraph) {
-    setupStructure(this, geojson)
-    this.graph = jsonGraph
-  }
-
   saveGraphToJson () {
-
+    return toJSON(this.graph)
   }
 
   addStartAndEndPointsToGraph (origin, destination) {

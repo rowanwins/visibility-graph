@@ -29,8 +29,7 @@ export function createGraphFromData (data) {
   clearGraphRelatedData()
 
   const startCreation = window.performance.now()
-  const vg = new VisibilityGraph()
-  vg.createGraphFromGeoJson(data)
+  const vg = new VisibilityGraph(data)
   const endCreation = window.performance.now()
   const timeTakenToCreate = parseInt(endCreation - startCreation)
   console.log('Time to construct: ', timeTakenToCreate)
@@ -48,10 +47,7 @@ export function createGraphFromDataUsingWorker (data) {
     const endCreation = window.performance.now()
     const timeTakenToCreate = parseInt(endCreation - startCreation)
     console.log('Time to construct: ', timeTakenToCreate)
-
-    const graph = fromjson(e.data)
-    const vg = new VisibilityGraph()
-    vg.loadGraphFromJson(data, graph)
+    const vg = new VisibilityGraph(data, e.data)
     setGraph(vg)
     findRouteThroughGraph(vg.graph)
   }

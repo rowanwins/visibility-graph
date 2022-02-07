@@ -2,8 +2,8 @@ import Contour from './Contour'
 import Point from './Point'
 import Edge from './Edge'
 
-export function setupStructure (vg, geojson) {
-  const geom = geojson.type === 'Feature' ? geojson.geometry : geojson
+export function setupStructure (vg) {
+  const geom = vg._geojson.type === 'Feature' ? vg._geojson.geometry : vg._geojson
 
   let coords = geom.coordinates
 
@@ -19,8 +19,8 @@ export function setupStructure (vg, geojson) {
     for (let ii = 0; ii < coords[i].length; ii++) {
       let prevPoint = new Point(coords[i][ii][0], i)
       let currentPoint = new Point(coords[i][ii][1], i)
-      checkPointAgainstBbox(prevPoint, bbox)  
-      checkPointAgainstBbox(currentPoint, bbox)  
+      checkPointAgainstBbox(prevPoint, bbox)
+      checkPointAgainstBbox(currentPoint, bbox)
 
       prevPoint.nextPoint = currentPoint
       let nextPoint = new Point(coords[i][ii][2], i)
@@ -42,8 +42,8 @@ export function setupStructure (vg, geojson) {
         vg._points.push(prevPoint)
 
         nextPoint = new Point(coords[i][ii][iii + 1], i)
-        checkPointAgainstBbox(nextPoint, bbox)  
-  
+        checkPointAgainstBbox(nextPoint, bbox)
+
         linkPoints(prevPoint, currentPoint, nextPoint)
 
         const e = new Edge(prevPoint, currentPoint) // eslint-disable-line
@@ -77,15 +77,15 @@ export function setupStructure (vg, geojson) {
   vg._clonedPoints = clonePoints(vg._points)
 }
 
-function clonePoints(points) {
+function clonePoints (points) {
   return points.slice(0)
 }
 
-function checkPointAgainstBbox(point, bbox) {
-  bbox[0] = Math.min(bbox[0], point.x);
-  bbox[1] = Math.min(bbox[1], point.y);
-  bbox[2] = Math.max(bbox[2], point.x);
-  bbox[3] = Math.max(bbox[3], point.y);
+function checkPointAgainstBbox (point, bbox) {
+  bbox[0] = Math.min(bbox[0], point.x)
+  bbox[1] = Math.min(bbox[1], point.y)
+  bbox[2] = Math.max(bbox[2], point.x)
+  bbox[3] = Math.max(bbox[3], point.y)
 }
 function linkPoints (prevPoint, currentPoint, nextPoint) {
   currentPoint.prevPoint = prevPoint

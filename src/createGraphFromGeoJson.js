@@ -47,7 +47,7 @@ export function processPoint (p, pointsLen, scan, visibilityGraph) {
       openEdges.addKey(new EdgeKey(p, pointInf, e))
     }
   }
-  // console.log(openEdges.keys.length)
+  if (openEdges.keys.length > 100) console.log(openEdges.keys.length)
   // _renderOpenEdges(p, openEdges.keys)
 
   const visible = []
@@ -73,6 +73,7 @@ export function processPoint (p, pointsLen, scan, visibilityGraph) {
         }
       }
     }
+    if (openEdges.keys.length > 100) console.log(openEdges.keys.length)
 
     let isVisible = false
     if (prev === null || ccw(p, prev, p2) !== 0 || !onSegment(p, prev, p2)) {

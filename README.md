@@ -4,15 +4,28 @@ Visibility graph implementation to support shortest path calculations such as [d
 ### [Demo](https://rowanwins.github.io/visibility-graph/debug/)
 
 ## Documentation
-Valid inputs: A [polygon](http://geojson.win/#appendix-A.3) or [multi-polygon](http://geojson.win/#appendix-A.6) feature or geometry.
+
+This library exposes a `VisibilityGraph` class
+
+#### API
+`new VisibilityGraph(geojson, ?existingGraph)` - creates a new instance using a [Polygon](http://geojson.win/#appendix-A.3) or [MultiPolygon](http://geojson.win/#appendix-A.6) feature or geometry. Optionally, if you have an existing graph that you've previously generated using the `.saveGraphToJson()` you can pass it in as a argument.
+
+`.saveGraphToJson()` - Returns a json representation of the visibility graph which can be saved to disk and then restored by passing a second argument to the class constructor.
+
+`.addStartAndEndPointsToGraph(origin, destination)` - Takes 2 geojson point features, one for the origin, and one for the destination, and returns the newly added nodes in an object `{startNode: ngraphNode, endNode: ngraphNode}`. Each time this is called any previously added start and end points are removed from the graph.
+
+`.getNodeIdByLatLon([lat, lon])` - Returns a graph node ID that matches the lat lon.
+
+
+
+## Example
 
 ````js
   import VisibilityGraph from 'visibility-graph.js'
   import path from 'ngraph.path'
 
   // Create the visibility graph from the geojson data
-  const vg = new VisibilityGraph()
-  vg.createGraphFromGeoJson(data)
+  const vg = new VisibilityGraph(geojson)
 
   // Use the 'ngraph.path' library to find a way 
   //through the newly created visibility graph
@@ -25,21 +38,24 @@ Valid inputs: A [polygon](http://geojson.win/#appendix-A.3) or [multi-polygon](h
   })
 
   // Add the start and endpoints to the graph  
-  const nodes = vg.addStartAndEndPointsToGraph(
+  const startEndNodes = vg.addStartAndEndPointsToGraph(
     {type: 'Feature', geometry: {type: 'Point', coordinates: [0, 0]}},
     {type: 'Feature', geometry: {type: 'Point', coordinates: [10, 10]}}
   )
   
   // And finally retrive the optimal path 
-  const optimalPath = pathFinder.find(nodes.startNode.nodeId, nodes.endNode.nodeId)
+  const optimalPath = pathFinder.find(
+    startEndNodes.startNode.nodeId,
+    startEndNodes.endNode.nodeId
+  )
 
   ````
 
 **NOTE:** If you get occassional issues with how your edges are being linked try reducing the precision of your coordinates (eg 8 decimal places). 
 
 ## Using with other packages
-- Once you've created your visibililty graph it is possible to save it, and then load it late, this can be achieved with [ngraph.tojson](https://github.com/anvaka/ngraph.tojson) and [ngraph.fromjson](https://github.com/anvaka/ngraph.fromjson) packages.
 - Path finding can be achieved with the [ngraph.path](https://github.com/anvaka/ngraph.path) package.
+
 
 ## Performance
 The process of creating a visibility graph can be slow depending on the number of vertices in your input geometry.
