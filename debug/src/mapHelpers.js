@@ -1,3 +1,7 @@
+import { Map } from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+import { featureCollection, point, coordEach } from '@turf/turf'
+
 let map = null
 let startMarker = null
 let endMarker = null
@@ -11,7 +15,7 @@ let pathFinder = null
 let routeLayer = null
 
 export function setupMap () {
-  map = window.map = L.map('map', {
+  map = new Map('map', {
     minZoom: 1,
     maxZoom: 20,
     center: [0, 0],
@@ -47,14 +51,14 @@ export function setData (data) {
     padding: [20, 20]
   })
 
-  points = turf.featureCollection([])
+  points = featureCollection([])
 
   pointsLyr = L.layerGroup([], {
     pane: 'popupPane'
   }).addTo(map)
 
-  turf.meta.coordEach(data, function (currentCoord) {
-    points.features.push(turf.point([currentCoord[0], currentCoord[1]]))
+  coordEach(data, function (currentCoord) {
+    points.features.push(point([currentCoord[0], currentCoord[1]]))
 
     var layer = L.circleMarker([currentCoord[1], currentCoord[0]], {
       radius: 3,

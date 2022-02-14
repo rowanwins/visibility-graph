@@ -1,7 +1,7 @@
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import butternut from 'rollup-plugin-butternut'
-import strip from 'rollup-plugin-strip'
+import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
+import { terser } from 'rollup-plugin-terser'
+import strip from '@rollup/plugin-strip'
 
 export default {
   input: './src/VisibilityGraph.js',
@@ -18,7 +18,7 @@ export default {
     strip({
       functions: ['_renderSortedPoints', '_renderOpenEdges']
     }),
-    butternut()
+    terser()
   ]
 
 }

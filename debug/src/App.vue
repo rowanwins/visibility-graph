@@ -18,12 +18,6 @@ export default {
     setData(truncatedData)
     setupRouteLayer()
     this.createGraph()
-    // const that = this
-    // setTimeout(function () {
-    //     console.log('starting')
-    //     that.createGraph()
-    //     console.log('stopping')
-    // }, 3000);
   },
   methods: {
     createGraph: function () {

@@ -2,7 +2,7 @@ import fromjson from 'ngraph.fromjson'
 import path from 'ngraph.path'
 import VisibilityGraph from '../../src/VisibilityGraph'
 
-import Worker from './graphCreation.worker.js'
+import Worker from './graphCreation.worker.js?worker'
 
 import { setPathFinder, setGraph, clearGraphRelatedData } from './mapHelpers'
 
