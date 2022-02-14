@@ -4,6 +4,7 @@ import gj from './gj'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/visibility-graph/',
   plugins: [
     vue(), gj()
   ]
