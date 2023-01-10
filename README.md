@@ -1,7 +1,7 @@
 # visibility-graph.js
 Visibility graph implementation to support shortest path calculations such as [dijkstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) or [a-star](https://en.wikipedia.org/wiki/A*_search_algorithm).
 
-### [Demo](https://rowanwins.github.io/visibility-graph/debug/)
+### [Demo](https://rowanwins.github.io/visibility-graph/debug/dist/index.html)
 
 ## Documentation
 
