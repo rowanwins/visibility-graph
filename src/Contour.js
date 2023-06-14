@@ -4,6 +4,6 @@
 export default class Contour {
   /** @type {Edge[]} */
   edges = []
-  /** @type {number[]} */
+  /** @type {[number, number, number, number]} */
   bbox = [Infinity, Infinity, -Infinity, -Infinity]
 }

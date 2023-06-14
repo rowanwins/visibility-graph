@@ -127,3 +127,24 @@ export function intersectPoint (p1, p2, edge) {
 export function calcEdgeDistance (p1, p2) {
   return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2))
 }
+
+/**
+ * @param {Point} point
+ * @param {[number, number, number, number]} bbox
+ */
+export function checkPointAgainstBbox (point, bbox) {
+  bbox[0] = Math.min(bbox[0], point.x)
+  bbox[1] = Math.min(bbox[1], point.y)
+  bbox[2] = Math.max(bbox[2], point.x)
+  bbox[3] = Math.max(bbox[3], point.y)
+}
+
+/**
+ * @param {Point} prevPoint
+ * @param {Point} currentPoint
+ * @param {Point} nextPoint
+ */
+export function linkPoints (prevPoint, currentPoint, nextPoint) {
+  currentPoint.prevPoint = prevPoint
+  currentPoint.nextPoint = nextPoint
+}

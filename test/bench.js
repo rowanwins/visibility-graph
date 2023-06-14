@@ -1,4 +1,4 @@
-import { createGraphFromGeoJson } from '../src/createGraphFromGeoJson.js'
+import GeoJsonHelper from '../src/GeoJsonHelper.js'
 import Benchmark from 'benchmark'
 import { loadJsonFileSync } from 'load-json-file'
 import VisibilityGraph from '../src/VisibilityGraph.js'
@@ -20,6 +20,6 @@ new Benchmark.Suite('Asia Test', {
   .add('VisibilityGraph', () => {
     const asia = loadJsonFileSync('./harness/asia.geojson')
     const vg = new VisibilityGraph(asia)
-    createGraphFromGeoJson(vg)
+    GeoJsonHelper.createGraphFromGeoJson(vg)
   })
   .run()
