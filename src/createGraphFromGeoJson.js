@@ -1,29 +1,44 @@
 import EdgeKeys from './EdgeKeys.js'
 import EdgeKey from './EdgeKey.js'
 import Point from './Point.js'
-import { edgeIntersect, onSegment, ccw, calcEdgeDistance } from './utils.js'
+import { calcEdgeDistance, ccw, edgeIntersect, onSegment } from './utils.js'
 
 export const FULL_PROCESS = 0
 export const HALF_PROCESS = 1
 
+/**
+ * @param {VisibilityGraph} visibilityGraph
+ */
 export function createGraphFromGeoJson (visibilityGraph) {
   processGraph(visibilityGraph)
 }
 
-export function addSinglePoint (visibilityGraph, p) {
-  processPoint(p, visibilityGraph._points.length, FULL_PROCESS, visibilityGraph)
+/**
+ * @param {VisibilityGraph} visibilityGraph
+ * @param {Point} point
+ */
+export function addSinglePoint (visibilityGraph, point) {
+  processPoint(point, visibilityGraph._points.length, FULL_PROCESS, visibilityGraph)
 }
 
+/**
+ * @param {VisibilityGraph} visibilityGraph
+ */
 function processGraph (visibilityGraph) {
   const points = visibilityGraph._points
   const pointsLen = points.length
-  const scan = HALF_PROCESS
-  for (var i = 0; i < pointsLen; i++) {
+  for (let i = 0; i < pointsLen; i++) {
     const p = points[i]
-    processPoint(p, pointsLen, scan, visibilityGraph)
+    processPoint(p, pointsLen, HALF_PROCESS, visibilityGraph)
   }
 }
 
+/**
+ * @param {Point} p
+ * @param {number} pointsLen
+ * @param {number} scan
+ * @param {VisibilityGraph} visibilityGraph
+ */
 export function processPoint (p, pointsLen, scan, visibilityGraph) {
   const clonedPoints = visibilityGraph._clonedPoints
   const edges = visibilityGraph._edges
@@ -113,13 +128,18 @@ export function processPoint (p, pointsLen, scan, visibilityGraph) {
   const nodeId = p.nodeId
   g.addNode(nodeId, { x: p.x, y: p.y })
 
-  for (var ii = 0; ii < visible.length; ii++) {
+  for (let ii = 0; ii < visible.length; ii++) {
     const otherNodeId = visible[ii].nodeId
     g.addNode(otherNodeId, { x: visible[ii].x, y: visible[ii].y })
     g.addLink(nodeId, otherNodeId)
   }
 }
 
+/**
+ * Sort in place the points by angle and distance from the point counter-clockwise
+ * @param {Point} point
+ * @param {Point[]} clonedPoints
+ */
 export function sortPoints (point, clonedPoints) {
   clonedPoints.sort((a, b) => {
     const angle1 = point.angleToPoint(a)
@@ -134,6 +154,11 @@ export function sortPoints (point, clonedPoints) {
   })
 }
 
+/**
+ * @param {Point} p1
+ * @param {Point} p2
+ * @param {{edges: Edge[]}[]} polygons
+ */
 function edgeInPolygon (p1, p2, polygons) {
   if (p1.polygonID !== p2.polygonID) return false
   if (p1.polygonID === -1 || p2.polygonID === -1) return false
@@ -141,6 +166,12 @@ function edgeInPolygon (p1, p2, polygons) {
   return polygonCrossing(midPoint, polygons[p1.polygonID].edges)
 }
 
+/**
+ *
+ * @param p1
+ * @param {Edge[]} polyEdges
+ * @return {boolean}
+ */
 function polygonCrossing (p1, polyEdges) {
   const p2 = new Point([Infinity, p1.y], -1)
   let intersectCount = 0
@@ -167,6 +198,6 @@ function polygonCrossing (p1, polyEdges) {
       intersectCount++
     }
   }
-  if (intersectCount % 2 === 0) return false
-  return true
+
+  return intersectCount % 2 !== 0
 }

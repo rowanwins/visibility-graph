@@ -31,6 +31,7 @@
     "@turf/distance": "^6.5.0",
     "@turf/truncate": "^6.5.0",
     "@turf/turf": "^6.5.0",
+    "@types/geojson": "^7946.0.10",
     "@vitejs/plugin-vue": "^4.2.3",
     "ava": "^5.3.0",
     "benchmark": "^2.1.4",

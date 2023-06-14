@@ -6,7 +6,7 @@ import Edge from './Edge.js'
  * @param vg {VisibilityGraph}
  */
 export function setupStructure (vg) {
-  const geom = vg._geojson.type === 'Feature' ? vg._geojson.geometry : vg._geojson
+  const geom = vg._geoJSON.type === 'Feature' ? vg._geoJSON.geometry : vg._geoJSON
 
   let coords = geom.coordinates
 

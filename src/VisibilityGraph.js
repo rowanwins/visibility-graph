@@ -6,17 +6,29 @@ import { setupStructure } from './setupStructure.js'
 import Point from './Point.js'
 
 export default class VisibilityGraph {
-  constructor (geojson, jsonGraph) {
-    this._geojson = geojson
-    this.graph = null
+  /** @type {Graph & EventedType} */
+  graph = null
+  /** @type {GeoJSON} */
+  _geoJSON = null
+  /** @type {Point[]} */
+  _points = []
+  /** @type {Point[]} */
+  _clonedPoints = []
+  /** @type {Edge[]} */
+  _edges = []
+  /** @type {Contour[]} */
+  _polygons = []
+  /** @type {Point} */
+  _lastOrigin = null
+  /** @type {Point} */
+  _lastDestination = null
 
-    this._points = []
-    this._clonedPoints = []
-    this._edges = []
-    this._polygons = []
-
-    this._lastOrigin = null
-    this._lastDestination = null
+  /**
+   * @param {GeoJSON} geoJSON
+   * @param {string | object} jsonGraph
+   */
+  constructor (geoJSON, jsonGraph = undefined) {
+    this._geoJSON = geoJSON
     setupStructure(this)
 
     if (jsonGraph) {
@@ -27,6 +39,9 @@ export default class VisibilityGraph {
     }
   }
 
+  /**
+   * @param {[number, number]} latLon LatLng coordinates (format: [lng, lat])
+   */
   getNodeIdByLatLon (latLon) {
     for (var i = 0; i < this._points.length; i++) {
       if (this._points[i].x === latLon[0] && this._points[i].y === latLon[1]) return this._points[i].nodeId
@@ -34,10 +49,18 @@ export default class VisibilityGraph {
     return null
   }
 
+  /**
+   * @return {string}
+   */
   saveGraphToJson () {
     return toJSON(this.graph)
   }
 
+  /**
+   * @param {Feature} origin
+   * @param {Feature} destination
+   * @return {{startNode: Point, endNode: Point}}
+   */
   addStartAndEndPointsToGraph (origin, destination) {
     if (this._lastOrigin !== null) {
       this.graph.removeNode(this._lastOrigin.nodeId)
@@ -49,6 +72,7 @@ export default class VisibilityGraph {
 
     addSinglePoint(this, this._lastOrigin)
     addSinglePoint(this, this._lastDestination)
+
     return {
       startNode: this._lastOrigin,
       endNode: this._lastDestination

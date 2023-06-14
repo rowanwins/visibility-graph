@@ -4,20 +4,28 @@ import { pi1, pi2 } from './constants.js'
  * Point class
  */
 export default class Point {
+  /** @type {number} */
   static #nodeId = 0
 
-  x = undefined
-  y = undefined
+  /** @type {number} */
+  x = 0
+  /** @type {number} */
+  y = 0
+  /** @type {number} */
   nodeId = 0
+  /** @type {number} */
   polygonID = 0
+  /** @type {Point} */
   prevPoint = null
+  /** @type {Point} */
   nextPoint = null
+  /** @type {Edge[]} */
   edges = []
 
   /**
    * Create a point
-   * @param coords {number[]}
-   * @param polygonID {number}
+   * @param {number[]} coords
+   * @param {number} polygonID
    */
   constructor (coords, polygonID) {
     this.x = coords[0]
@@ -37,7 +45,7 @@ export default class Point {
 
   /**
    * Get angle between two points
-   * @param otherPoint {Point}
+   * @param {Point} otherPoint
    * @return {number}
    */
   angleToPoint (otherPoint) {
