@@ -1,9 +1,17 @@
 {
-  "extends": ["plugin:vue-libs/recommended"],
+  "extends": [
+  ],
   "rules": {
     "padded-blocks": "off",
     "no-console": "off",
-    "indent": ["error", 2]
+    "indent": [
+      "error",
+      2
+    ]
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2015
   },
   "globals": {
     "L": true,
