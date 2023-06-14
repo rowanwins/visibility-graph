@@ -1,10 +1,9 @@
 import createGraph from 'ngraph.graph'
 import fromJSON from 'ngraph.fromjson'
 import toJSON from 'ngraph.tojson'
-
-import { createGraphFromGeoJson, addSinglePoint } from './createGraphFromGeoJson'
-import { setupStructure } from './setupStructure'
-import Point from './Point'
+import { createGraphFromGeoJson, addSinglePoint } from './createGraphFromGeoJson.js'
+import { setupStructure } from './setupStructure.js'
+import Point from './Point.js'
 
 export default class VisibilityGraph {
   constructor (geojson, jsonGraph) {

@@ -1,4 +1,4 @@
-import { edgeIntersect, pointEdgeDistance, angle2 } from './utils'
+import { edgeIntersect, pointEdgeDistance, angle2 } from './utils.js'
 
 export default class EdgeKey {
 

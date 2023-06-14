@@ -1,9 +1,7 @@
-import EdgeKeys from './EdgeKeys'
-import EdgeKey from './EdgeKey'
-import Point from './Point'
-
-import { edgeIntersect, onSegment, ccw, calcEdgeDistance } from './utils'
-import { _renderSortedPoints, _renderOpenEdges } from './debug' //eslint-disable-line
+import EdgeKeys from './EdgeKeys.js'
+import EdgeKey from './EdgeKey.js'
+import Point from './Point.js'
+import { edgeIntersect, onSegment, ccw, calcEdgeDistance } from './utils.js'
 
 export const FULL_PROCESS = 0
 export const HALF_PROCESS = 1

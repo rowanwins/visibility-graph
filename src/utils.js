@@ -1,8 +1,5 @@
-import Point from './Point'
+import Point from './Point.js'
 import { orient2d } from 'robust-predicates'
-
-export const pi1 = Math.PI * 3 / 2
-export const pi2 = Math.PI / 2
 
 export function edgeIntersect (p1, q1, edge) {
   const p2 = edge.p1
