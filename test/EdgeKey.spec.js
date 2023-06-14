@@ -1,23 +1,23 @@
 import test from 'ava'
-import Edge from '../src/Edge'
-import Point from '../src/Point'
-import EdgeKey from '../src/EdgeKey'
+import Edge from '../src/Edge.js'
+import Point from '../src/Point.js'
+import EdgeKey from '../src/EdgeKey.js'
 
 test('EdgeKey test', t => {
 
-  var p1 = new Point([0, 0], -1)
-  var p2 = new Point([0, 1], -1)
-  var p3 = new Point([0, 2], -1)
-  var p4 = new Point([0, 0], -1)
+  const p1 = new Point([0, 0], -1)
+  const p2 = new Point([0, 1], -1)
+  const p3 = new Point([0, 2], -1)
+  const p4 = new Point([0, 0], -1)
 
-  var e1 = new Edge(p1, p2)
-  var e2 = new Edge(p3, p4)
+  const e1 = new Edge(p1, p2)
+  const e2 = new Edge(p3, p4)
 
-  var ek1 = new EdgeKey(p1, p2, e1)
-  var ek1a = new EdgeKey(p1, p2, e1)
-  var ek1b = new EdgeKey(p2, p1, e1)
+  const ek1 = new EdgeKey(p1, p2, e1)
+  const ek1a = new EdgeKey(p1, p2, e1)
+  const ek1b = new EdgeKey(p2, p1, e1)
 
-  var ek2 = new EdgeKey(p1, p2, e2)
+  const ek2 = new EdgeKey(p1, p2, e2)
 
   t.is(ek1.matchesOtherKey(ek1), true)
   t.is(ek1.matchesOtherKey(ek1a), true)
@@ -27,16 +27,16 @@ test('EdgeKey test', t => {
 
 test('EdgeKey less than test', t => {
 
-  var p1 = new Point([3, 1], -1)
-  var p2 = new Point([3, 5], -1)
-  var p3 = new Point([2, 2], -1)
-  var p4 = new Point([4, 4], -1)
+  const p1 = new Point([3, 1], -1)
+  const p2 = new Point([3, 5], -1)
+  const p3 = new Point([2, 2], -1)
+  const p4 = new Point([4, 4], -1)
 
-  var e1 = new Edge(p1, p2)
-  var e2 = new Edge(p3, p4)
+  const e1 = new Edge(p1, p2)
+  const e2 = new Edge(p3, p4)
 
-  var ek1 = new EdgeKey(p1, p2, e1)
-  var ek2 = new EdgeKey(p1, p2, e2)
+  const ek1 = new EdgeKey(p1, p2, e1)
+  const ek2 = new EdgeKey(p1, p2, e2)
 
   t.is(ek1.isLessThanOtherEdgeKey(ek2), true)
   t.is(ek2.isLessThanOtherEdgeKey(ek1), false)

@@ -1,8 +1,9 @@
-
+/**
+ * Contour
+ */
 export default class Contour {
-
-  constructor () {
-    this.edges = []
-    this.bbox = [Infinity, Infinity, -Infinity, -Infinity]
-  }
+  /** @type {Edge[]} */
+  edges = []
+  /** @type {[number, number, number, number]} */
+  bbox = [Infinity, Infinity, -Infinity, -Infinity]
 }

@@ -1,9 +1,16 @@
-import Point from './Point'
+import Point from './Point.js'
 import { orient2d } from 'robust-predicates'
 
-export const pi1 = Math.PI * 3 / 2
-export const pi2 = Math.PI / 2
+const COLIN_TOLERANCE = 10
+const T = Math.pow(10, COLIN_TOLERANCE)
+const T2 = Math.pow(10, COLIN_TOLERANCE)
 
+/**
+ * @param {Point} p1
+ * @param {Point} q1
+ * @param {Edge} edge
+ * @return {boolean}
+ */
 export function edgeIntersect (p1, q1, edge) {
   const p2 = edge.p1
   const q2 = edge.p2
@@ -21,6 +28,12 @@ export function edgeIntersect (p1, q1, edge) {
   return false
 }
 
+/**
+ * @param {Point} a
+ * @param {Point} b
+ * @param {Point} c
+ * @return {number}
+ */
 export function ccw (a, b, c) {
   const r = orient2d(c.x, c.y, b.x, b.y, a.x, a.y)
   if (r > 0) return 1
@@ -28,6 +41,12 @@ export function ccw (a, b, c) {
   return 0
 }
 
+/**
+ * @param {Point} p
+ * @param {Point} q
+ * @param {Point} r
+ * @return {boolean}
+ */
 export function onSegment (p, q, r) {
   if (q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x)) {
     if (q.y <= Math.max(p.y, r.y) && q.y >= Math.min(p.y, r.y)) return true
@@ -35,10 +54,12 @@ export function onSegment (p, q, r) {
   return false
 }
 
-const COLIN_TOLERANCE = 10
-const T = Math.pow(10, COLIN_TOLERANCE)
-const T2 = Math.pow(10, COLIN_TOLERANCE)
-
+/**
+ * @param {Point} p1
+ * @param {Point} p2
+ * @param {Point} p3
+ * @return {number}
+ */
 export function angle2 (p1, p2, p3) {
   const a = Math.pow((p3.x - p2.x), 2) + Math.pow((p3.y - p2.y), 2)
   const b = Math.pow((p3.x - p1.x), 2) + Math.pow((p3.y - p1.y), 2)
@@ -55,11 +76,23 @@ export function angle2 (p1, p2, p3) {
   // return f
 }
 
+/**
+ * @param {Point} p1
+ * @param {Point} p2
+ * @param {Edge} edge
+ * @return {number}
+ */
 export function pointEdgeDistance (p1, p2, edge) {
   const ip = intersectPoint(p1, p2, edge)
   return ip !== null ? calcEdgeDistance(p1, ip) : 0
 }
 
+/**
+ * @param {Point} p1
+ * @param {Point} p2
+ * @param {Edge} edge
+ * @return {Point|null}
+ */
 export function intersectPoint (p1, p2, edge) {
   if (edge.containsPoint(p1)) return p1
   if (edge.containsPoint(p2)) return p2
@@ -86,6 +119,32 @@ export function intersectPoint (p1, p2, edge) {
   return new Point([intersectX, intersectY], -1)
 }
 
+/**
+ * @param {Point} p1
+ * @param {Point} p2
+ * @return {number}
+ */
 export function calcEdgeDistance (p1, p2) {
   return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2))
+}
+
+/**
+ * @param {Point} point
+ * @param {[number, number, number, number]} bbox
+ */
+export function checkPointAgainstBbox (point, bbox) {
+  bbox[0] = Math.min(bbox[0], point.x)
+  bbox[1] = Math.min(bbox[1], point.y)
+  bbox[2] = Math.max(bbox[2], point.x)
+  bbox[3] = Math.max(bbox[3], point.y)
+}
+
+/**
+ * @param {Point} prevPoint
+ * @param {Point} currentPoint
+ * @param {Point} nextPoint
+ */
+export function linkPoints (prevPoint, currentPoint, nextPoint) {
+  currentPoint.prevPoint = prevPoint
+  currentPoint.nextPoint = nextPoint
 }

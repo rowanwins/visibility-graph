@@ -1,22 +1,30 @@
+/**
+ * EdgeKeys
+ */
 export default class EdgeKeys {
+  /** @type {EdgeKey[]} */
+  keys = []
 
-  constructor () {
-    this.keys = []
-  }
-
-  findKeyPosition (edgekey, p) {
+  /**
+   * @param {EdgeKey} edgeKey
+   * @return {number}
+   */
+  findKeyPosition (edgeKey) {
     let lo = 0
     let hi = this.keys.length
     while (lo < hi) {
       const mid = Math.floor((lo + hi) / 2)
-      if (edgekey.isLessThanOtherEdgeKey(this.keys[mid])) hi = mid
+      if (edgeKey.isLessThanOtherEdgeKey(this.keys[mid])) hi = mid
       else lo = mid + 1
     }
     return lo
   }
 
-  addKey (edgekey, p) {
-    const lo = this.findKeyPosition(edgekey)
-    this.keys.splice(lo, 0, edgekey)
+  /**
+   * @param {EdgeKey} edgeKey
+   */
+  addKey (edgeKey) {
+    const lo = this.findKeyPosition(edgeKey)
+    this.keys.splice(lo, 0, edgeKey)
   }
 }

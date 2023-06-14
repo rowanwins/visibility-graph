@@ -1,23 +1,23 @@
 import test from 'ava'
-import Edge from '../src/Edge'
-import Point from '../src/Point'
-import EdgeKey from '../src/EdgeKey'
-import EdgeKeys from '../src/EdgeKeys'
+import Edge from '../src/Edge.js'
+import Point from '../src/Point.js'
+import EdgeKey from '../src/EdgeKey.js'
+import EdgeKeys from '../src/EdgeKeys.js'
 
 test('EdgeKey test', t => {
 
-  var p1 = new Point([0, 0], -1)
-  var p2 = new Point([0, 1], -1)
-  var p3 = new Point([0, 2], -1)
-  var p4 = new Point([0, 0], -1)
+  const p1 = new Point([0, 0], -1)
+  const p2 = new Point([0, 1], -1)
+  const p3 = new Point([0, 2], -1)
+  const p4 = new Point([0, 0], -1)
 
-  var e1 = new Edge(p1, p2)
-  var e2 = new Edge(p3, p4)
+  const e1 = new Edge(p1, p2)
+  const e2 = new Edge(p3, p4)
 
-  var ek1 = new EdgeKey(p1, p2, e1)
-  var ek2 = new EdgeKey(p1, p2, e2)
+  const ek1 = new EdgeKey(p1, p2, e1)
+  const ek2 = new EdgeKey(p1, p2, e2)
 
-  var eks = new EdgeKeys()
+  const eks = new EdgeKeys()
   t.is(eks.keys.length, 0)
 
   eks.addKey(ek1)

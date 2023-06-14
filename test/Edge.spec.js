@@ -1,19 +1,19 @@
 import test from 'ava'
-import Edge from '../src/Edge'
-import Point from '../src/Point'
+import Edge from '../src/Edge.js'
+import Point from '../src/Point.js'
 
 test('Edge test', t => {
 
-  var p1 = new Point([0, 0], -1)
-  var p2 = new Point([0, 1], -1)
-  var p3 = new Point([0, 2], -1)
-  var p4 = new Point([0, 0], -1)
-  var p5 = new Point([0, 1], -1)
+  const p1 = new Point([0, 0], -1)
+  const p2 = new Point([0, 1], -1)
+  const p3 = new Point([0, 2], -1)
+  const p4 = new Point([0, 0], -1)
+  const p5 = new Point([0, 1], -1)
 
-  var e1 = new Edge(p1, p2)
-  var e1a = new Edge(p2, p1)
-  var e2 = new Edge(p3, p4)
-  var e2a = new Edge(p5, p4)
+  const e1 = new Edge(p1, p2)
+  const e1a = new Edge(p2, p1)
+  const e2 = new Edge(p3, p4)
+  const e2a = new Edge(p5, p4)
 
   t.is(e1.areEdgesEqual(e1a), true)
   t.is(e2a.areEdgesEqual(e1), true)
